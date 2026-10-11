@@ -1,0 +1,16 @@
+# Entornos y cachés de Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Datos: descomenta si son pesados o privados
+# (los .gitkeep mantienen la estructura de carpetas en el repo)
+# data/raw/*
+# data/processed/*
+# !data/**/.gitkeep
