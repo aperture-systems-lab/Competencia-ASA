@@ -19,9 +19,11 @@ _LECTORES = {
 
 
 def _leer(ruta, **kwargs):
-    lector = _LECTORES.get(ruta.suffix.lower())
+    # Un .gz se trata como CSV comprimido (pandas lo descomprime solo)
+    ext = ".csv" if ruta.suffix.lower() == ".gz" else ruta.suffix.lower()
+    lector = _LECTORES.get(ext)
     if lector is None:
-        raise ValueError(f"Formato no soportado: {ruta.suffix} (usa {', '.join(_LECTORES)})")
+        raise ValueError(f"Formato no soportado: {ruta.suffix} (usa {', '.join(_LECTORES)}, .gz)")
     return lector(ruta, **kwargs)
 
 
