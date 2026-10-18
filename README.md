@@ -28,10 +28,20 @@ competencia_asa/
 
 ## Datos
 
-- **Fuente:** _(organización / enlace)_
-- **Archivo(s):** _(nombre en `data/raw/`)_
-- **Fecha de descarga:** _(AAAA-MM-DD)_
-- **Qué representa cada fila:** _(...)_
+- **Fuente:**
+  - Naciones Unidas, División de Población: [World Population Prospects 2024](https://population.un.org/wpp/) (indicadores demográficos).
+  - Banco Mundial: [Education Statistics (EdStats)](https://databank.worldbank.org/source/education-statistics), base 12, descargada con `wbgapi` (PISA 2000–2018).
+  - OCDE: tablas web de *PISA 2022 Results, Volume I* y *PISA 2025 Results, Volume I* (PISA 2022 y 2025).
+- **Archivo(s):**
+  - `WPP2024_Demographic_Indicators_Medium_csv.gz`, `WPP2024_Demographic_Indicators_OtherVariants_csv.gz`, `WPP2024_Demographic_Indicators_notes.csv`, `WPP2024_Supplement_Births_and_LE60.csv`
+  - `PISA_BancoMundial_2000_2018.csv` (lo genera `notebooks/00_unificacion_pisa.ipynb`)
+  - `PISA2022_cap2_desempeno.xlsx`, `PISA2022_cap3_niveles.xlsx`, `PISA2022_cap4_equidad_genero.xlsx`, `PISA2022_cap7_migracion.xlsx`
+  - `PISA2025_cap2a_desempeno_niveles.xlsx`, `PISA2025_cap2c_genero.xlsx`, `PISA2025_cap2d_migracion.xlsx`
+  - Resultado unificado: `data/processed/pisa_unificado.csv`
+- **Fecha de descarga:** WPP2024: 2026-10-14. Banco Mundial y OCDE: 2026-10-18.
+- **Qué representa cada fila:**
+  - WPP2024: un país o región en un año (`ISO3_code`, `Time`).
+  - `pisa_unificado.csv`: un país (o el promedio OCDE, `OED`) en un ciclo de PISA (`ISO3_code`, `Time`), con puntajes medios, percentiles y niveles de competencia por materia, en total y por sexo, más el % con nivel mínimo según origen migratorio.
 
 ## Cómo ejecutarlo
 
