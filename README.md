@@ -12,6 +12,7 @@ competencia_asa/
 │   ├── raw/                       # datos originales: NUNCA se modifican
 │   └── processed/                 # datos limpios, listos para graficar
 ├── notebooks/
+│   ├── 00_unificacion_pisa.ipynb  # une PISA 2000–2018 (Banco Mundial) + 2022 y 2025 (OCDE) → data/processed/
 │   ├── 01_exploracion.ipynb       # Data Understanding
 │   ├── 02_limpieza.ipynb          # Data Preparation: limpieza → data/processed/
 │   └── 03_visualizaciones.ipynb   # los 4-6 gráficos finales → figures/
