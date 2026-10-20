@@ -14,7 +14,7 @@ competencia_asa/
 ├── notebooks/
 │   ├── 00_unificacion_pisa.ipynb  # une PISA 2000–2018 (Banco Mundial) + 2022 y 2025 (OCDE) → data/processed/
 │   ├── 01_exploracion.ipynb       # Data Understanding: WPP2024 (Medium, Supplement y OtherVariants) y su enlace con PISA
-│   ├── 02_limpieza.ipynb          # Data Preparation: limpieza → data/processed/
+│   ├── 02_limpieza.ipynb          # Data Preparation: WPP2024 en los años de PISA + unión con PISA → data/processed/
 │   └── 03_visualizaciones.ipynb   # los 4-6 gráficos finales → figures/
 ├── src/
 │   ├── utils.py                   # rutas y funciones de carga/limpieza reutilizables
@@ -38,6 +38,7 @@ competencia_asa/
   - `PISA2022_cap2_desempeno.xlsx`, `PISA2022_cap3_niveles.xlsx`, `PISA2022_cap4_equidad_genero.xlsx`, `PISA2022_cap7_migracion.xlsx`
   - `PISA2025_cap2a_desempeno_niveles.xlsx`, `PISA2025_cap2c_genero.xlsx`, `PISA2025_cap2d_migracion.xlsx`
   - Resultado unificado: `data/processed/pisa_unificado.csv`
+  - Resultados de la limpieza (`02_limpieza`): `data/processed/wpp_paises_pisa.csv`, `wpp_agregados_pisa.csv`, `pisa_wpp.csv` y `diccionario_wpp.csv` (ver [Datos procesados](#datos-procesados))
 - **Fecha de descarga:** WPP2024: 2026-10-14. Banco Mundial y OCDE: 2026-10-18.
 - **Qué representa cada fila:**
   - WPP2024 Medium: una ubicación en un año (`LocID`, `Time`), de 1950 a 2101. Las ubicaciones mezclan 237 países (`LocTypeName == "Country/Area"`) con agregados (Mundo, regiones, grupos de ingreso...), así que hay que filtrar antes de sumar o promediar.
@@ -69,6 +70,55 @@ Detalle en `notebooks/01_exploracion.ipynb`:
   - **Incertidumbre en 2025:** en los países de PISA, el intervalo del 95 % mide unos ±0,27 hijos en `TFR` y ±1,5 años en `LEx` (mediana).
   - **Sensibilidad a largo plazo:** según el Medium, la población mundial llega a su máximo en 2084. Según el intervalo del 95 %, ese pico puede llegar en 2068 o no haberse alcanzado todavía en 2100.
 
+### Datos procesados
+
+`notebooks/02_limpieza.ipynb` deja WPP2024 solo en los **años de los ciclos de PISA** (2000, 2003, 2006, 2009, 2012, 2015, 2018, 2022 y 2025). Los años se leen de `pisa_unificado.csv`, no se escriben a mano.
+
+| Archivo | Una fila es... | Filas | Contenido |
+|---|---|---|---|
+| `wpp_paises_pisa.csv` | un país en un año de PISA | 2 133 (237 × 9) | Todos los países, participen o no en PISA. Útil para dar contexto y para medir el sesgo de selección |
+| `wpp_agregados_pisa.csv` | un agregado en un año de PISA | 153 | Mundo, regiones geográficas y grupos de ingreso, como referencia. **No se suman con los países.** Entre sí, solo se suman los de una misma `particion` |
+| `pisa_wpp.csv` | un país en un ciclo de PISA en el que participó | 590 | `pisa_unificado.csv` + WPP. Es la tabla principal del análisis |
+| `diccionario_wpp.csv` | una columna de WPP | 44 | Descripción, unidad y origen de cada columna |
+
+Decisiones de limpieza:
+
+- **Columnas:** se conservan 17 indicadores del Medium, uno o dos por tema:
+  - Población: `TPopulation1July`, `PopDensity`, `MedianAgePop`, `PopGrowthRate`.
+  - Fecundidad: `TFR`, `CBR`, `Births`, `Births1519`, `MAC`.
+  - Mortalidad: `LEx` (total y por sexo), `IMR`, `Q5`, `CDR`.
+  - Migración: `NetMigrations`, `CNMR`.
+
+  Del Supplement se añaden `LE60`, `LE60Male` y `LE60Female`. Las demás columnas son redundantes (correlación > 0,95), son identificadores sin uso o están vacías en gran parte (`DoublingTime`).
+- **Nombres y unidades:** se mantienen los originales de la ONU para poder rastrear cada columna hasta su definición. Los conteos siguen en miles.
+- **Marcas añadidas:**
+  - `es_proyeccion`: solo 2025.
+  - `territorio_pequeno`: menos de 100 000 habitantes. En PISA solo afecta a Liechtenstein.
+  - `participa_pisa`: solo en `wpp_paises_pisa.csv`.
+- **Variable derivada:** `pct_births_adolescentes = 100 × Births1519 / Births`.
+- **Doble conteo:** está resuelto en la limpieza.
+  - Los archivos de países solo tienen países, y su suma coincide con la fila del Mundo en cada año: tampoco hay solapamientos entre países.
+  - Los agregados sí se solapan entre sí. Por ejemplo, `Americas` = `Latin America and the Caribbean` + `Northern America`, y `Middle-income` = `Upper-middle` + `Lower-middle`.
+  - La columna `particion` marca dos conjuntos que se pueden sumar o apilar en un gráfico:
+    - `continentes`: África, Asia, Europa, América Latina y el Caribe, América del Norte y Oceanía.
+    - `ingreso`: alto, medio-alto, medio-bajo, bajo y sin grupo.
+  - Ambos suman el Mundo; la partición de ingreso deja fuera a Guadalupe, que WPP no clasifica por ingreso. Las filas con `particion` vacía no se suman.
+- **Cobertura parcial de PISA:** en 10 filas de `pisa_wpp.csv`, PISA evaluó solo una ciudad o algunas regiones, pero los datos demográficos son de todo el país:
+  - China en todos sus ciclos (Shanghái o algunas provincias).
+  - Azerbaiyán en 2022 (Bakú).
+  - Ucrania en 2022 y 2025 (parte de sus regiones).
+  - Tayikistán en 2025 (Dusambé).
+  - Irak en 2025 (Región del Kurdistán).
+
+  Se marcan con `cobertura_pisa_parcial` y `entidad_pisa`. **Hay que excluirlas al relacionar PISA con la demografía.**
+- **Incertidumbre de 2025:** para `TPopulation1July`, `TFR` y `LEx` se añaden los intervalos de predicción del 80 % y del 95 % (`*_PI80_inf`, `*_PI80_sup`, `*_PI95_inf`, `*_PI95_sup`). En los años estimados quedan vacíos.
+- **Exclusiones:**
+  - `OED`, el promedio OCDE: 3 filas de PISA que no existen en WPP. Sigue disponible en `pisa_unificado.csv`.
+  - Los agregados que no son Mundo, región geográfica ni grupo de ingreso.
+- **Nulos:** solo quedan `LE60` del Vaticano (no está en el Supplement ni participa en PISA) y los intervalos de predicción en los años estimados. No se imputa nada.
+- **Outliers:** se conservan todos porque son reales. Por ejemplo, la migración de Qatar en 2006 o la densidad de Macao.
+- **Sesgo de selección:** los países de PISA no representan al mundo. En 2022, su mediana de fecundidad es 1,6 hijos frente a 2,4 en los que no participan, y su esperanza de vida, 77,9 años frente a 71,6. Las conclusiones valen para los países participantes.
+
 ## Criterios de análisis (técnicos y éticos, ASA)
 
 Se aplican en todos los notebooks y en el informe:
@@ -99,7 +149,7 @@ En VS Code, abre un notebook y elige como kernel el Python de `.venv`. Para usar
 2. Ejecuta los notebooks en orden:
    - `00_unificacion_pisa`: genera `data/processed/pisa_unificado.csv`.
    - `01_exploracion`: explora WPP2024 (Medium, Supplement y OtherVariants) y comprueba el enlace con PISA. Solo lee (`data/raw/` y `pisa_unificado.csv`), no guarda nada.
-   - `02_limpieza`: genera el archivo limpio en `data/processed/`.
+   - `02_limpieza`: filtra WPP2024 a los años de PISA, lo une con `pisa_unificado.csv` y genera los cuatro archivos de [Datos procesados](#datos-procesados).
    - `03_visualizaciones`: genera las figuras en `figures/`.
 
 Antes de dar un notebook por terminado, haz **Restart & Run All** para comprobar que funciona de principio a fin.

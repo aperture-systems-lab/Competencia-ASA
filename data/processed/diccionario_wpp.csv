@@ -1,0 +1,45 @@
+columna,descripcion,unidad,origen
+ISO3_code,Código ISO 3166-1 alfa-3 del país,,WPP2024 Medium
+LocID,Código numérico de ubicación de la ONU (M49),,WPP2024 Medium
+Location,Nombre del país o agregado (inglés),,WPP2024 Medium
+LocTypeName,Tipo de agregado (solo en wpp_agregados_pisa),,WPP2024 Medium
+Time,Año (solo ciclos de PISA),año,WPP2024 Medium
+es_proyeccion,"True si Time > 2023: dato proyectado, no estimado",booleano,Derivada
+TPopulation1July,"Total Population, as of 1 July",thousands,WPP2024 Medium
+PopDensity,"Population Density, as of 1 July",persons per square km,WPP2024 Medium
+MedianAgePop,"Median Age, as of 1 July",years,WPP2024 Medium
+PopGrowthRate,Population Growth Rate,percentage,WPP2024 Medium
+TFR,Total Fertility Rate,live births per woman,WPP2024 Medium
+CBR,Crude Birth Rate,"births per 1,000 population",WPP2024 Medium
+Births,Births,thousands,WPP2024 Medium
+Births1519,Births by women aged 15 to 19,thousands,WPP2024 Medium
+MAC,Mean Age Childbearing,years,WPP2024 Medium
+LEx,"Life Expectancy at Birth, both sexes",years,WPP2024 Medium
+LExMale,Male Life Expectancy at Birth,years,WPP2024 Medium
+LExFemale,Female Life Expectancy at Birth,years,WPP2024 Medium
+IMR,Infant Mortality Rate,"infant deaths per 1,000 live births",WPP2024 Medium
+Q5,Under-five Mortality Rate,"deaths under age 5 per 1,000 live births",WPP2024 Medium
+CDR,Crude Death Rate,"deaths per 1,000 population",WPP2024 Medium
+NetMigrations,Net Number of Migrants,thousands,WPP2024 Medium
+CNMR,Net Migration Rate,"per 1,000 population",WPP2024 Medium
+LE60,"Esperanza de vida a los 60 años, ambos sexos",years,WPP2024 Supplement
+LE60Male,"Esperanza de vida a los 60 años, hombres",years,WPP2024 Supplement
+LE60Female,"Esperanza de vida a los 60 años, mujeres",years,WPP2024 Supplement
+pct_births_adolescentes,100 × Births1519 / Births: % de nacimientos de madres de 15 a 19 años,percentage,Derivada
+territorio_pequeno,True si TPopulation1July < 100 (menos de 100 000 habitantes),booleano,Derivada
+participa_pisa,True si el país tiene datos de PISA ese año (solo en wpp_paises_pisa),booleano,Derivada
+particion,"Conjunto de agregados sin solapamiento que suma el Mundo: 'continentes', 'ingreso' o vacío (no sumar). Solo en wpp_agregados_pisa",,Derivada
+cobertura_pisa_parcial,True si PISA evaluó solo una ciudad o algunas regiones del país ese ciclo. Solo en pisa_wpp,booleano,Derivada
+entidad_pisa,Entidad que evaluó PISA ('Nacional' o el nombre de la ciudad o regiones). Solo en pisa_wpp,,Derivada
+TPopulation1July_PI80_inf,TPopulation1July: límite inferior del intervalo de predicción del 80 % (solo años proyectados),thousands,WPP2024 OtherVariants
+TPopulation1July_PI80_sup,TPopulation1July: límite superior del intervalo de predicción del 80 % (solo años proyectados),thousands,WPP2024 OtherVariants
+TPopulation1July_PI95_inf,TPopulation1July: límite inferior del intervalo de predicción del 95 % (solo años proyectados),thousands,WPP2024 OtherVariants
+TPopulation1July_PI95_sup,TPopulation1July: límite superior del intervalo de predicción del 95 % (solo años proyectados),thousands,WPP2024 OtherVariants
+TFR_PI80_inf,TFR: límite inferior del intervalo de predicción del 80 % (solo años proyectados),live births per woman,WPP2024 OtherVariants
+TFR_PI80_sup,TFR: límite superior del intervalo de predicción del 80 % (solo años proyectados),live births per woman,WPP2024 OtherVariants
+TFR_PI95_inf,TFR: límite inferior del intervalo de predicción del 95 % (solo años proyectados),live births per woman,WPP2024 OtherVariants
+TFR_PI95_sup,TFR: límite superior del intervalo de predicción del 95 % (solo años proyectados),live births per woman,WPP2024 OtherVariants
+LEx_PI80_inf,LEx: límite inferior del intervalo de predicción del 80 % (solo años proyectados),years,WPP2024 OtherVariants
+LEx_PI80_sup,LEx: límite superior del intervalo de predicción del 80 % (solo años proyectados),years,WPP2024 OtherVariants
+LEx_PI95_inf,LEx: límite inferior del intervalo de predicción del 95 % (solo años proyectados),years,WPP2024 OtherVariants
+LEx_PI95_sup,LEx: límite superior del intervalo de predicción del 95 % (solo años proyectados),years,WPP2024 OtherVariants
