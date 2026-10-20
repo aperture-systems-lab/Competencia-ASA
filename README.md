@@ -13,7 +13,7 @@ competencia_asa/
 │   └── processed/                 # datos limpios, listos para graficar
 ├── notebooks/
 │   ├── 00_unificacion_pisa.ipynb  # une PISA 2000–2018 (Banco Mundial) + 2022 y 2025 (OCDE) → data/processed/
-│   ├── 01_exploracion.ipynb       # Data Understanding
+│   ├── 01_exploracion.ipynb       # Data Understanding: WPP2024 (Medium, Supplement y OtherVariants) y su enlace con PISA
 │   ├── 02_limpieza.ipynb          # Data Preparation: limpieza → data/processed/
 │   └── 03_visualizaciones.ipynb   # los 4-6 gráficos finales → figures/
 ├── src/
@@ -40,8 +40,48 @@ competencia_asa/
   - Resultado unificado: `data/processed/pisa_unificado.csv`
 - **Fecha de descarga:** WPP2024: 2026-10-14. Banco Mundial y OCDE: 2026-10-18.
 - **Qué representa cada fila:**
-  - WPP2024: un país o región en un año (`ISO3_code`, `Time`).
+  - WPP2024 Medium: una ubicación en un año (`LocID`, `Time`), de 1950 a 2101. Las ubicaciones mezclan 237 países (`LocTypeName == "Country/Area"`) con agregados (Mundo, regiones, grupos de ingreso...), así que hay que filtrar antes de sumar o promediar.
+  - WPP2024 Supplement: un país en un año (`ISO3_code`, `Time`), de 1950 a 2100. Son 236 países (todos menos el Vaticano) y se une uno a uno con el Medium.
+  - WPP2024 OtherVariants: una ubicación en un año y una variante de proyección (`LocID`, `Variant`, `Time`), solo de 2024 a 2101. Tiene las mismas columnas que el Medium.
   - `pisa_unificado.csv`: un país (o el promedio OCDE, `OED`) en un ciclo de PISA (`ISO3_code`, `Time`), con puntajes medios, percentiles y niveles de competencia por materia, en total y por sexo, más el % con nivel mínimo según origen migratorio.
+
+### Notas sobre WPP2024
+
+Detalle en `notebooks/01_exploracion.ipynb`:
+
+- **Doble conteo:** sumar la población de 2023 sin filtrar da unos 363 000 millones de personas, unas 45 veces la real (8 092 millones). Filtrar por `LocTypeName == "Country/Area"` equivale a filtrar por `ISO3_code.notna()`.
+- **Estimación y proyección:** los datos de 1950 a 2023 son estimaciones; los de 2024 en adelante son proyecciones de la variante media. Por eso PISA 2025 se cruza con datos proyectados.
+- **Unidades:**
+  - Población, nacimientos, muertes y migrantes están en **miles**; para dar cifras absolutas hay que multiplicar por 1.000.
+  - `CBR`, `CDR` y `CNMR` son tasas por 1.000 habitantes.
+  - `IMR` y `Q5` son defunciones por 1.000 nacidos vivos.
+  - `TFR` está en hijos por mujer.
+- **Diccionario:** `WPP2024_Demographic_Indicators_notes.csv` describe los 54 indicadores del Medium (tema, nombre y unidad). No contiene el texto de las notas al pie de la columna `Notes`.
+- **Supplement:** añade nacimientos por sexo (`BirthsMale`, `BirthsFemale`, que suman `Births`) y la esperanza de vida a los 60 años (`LE60`, `LE60Male`, `LE60Female`).
+- **Año 2101:** solo trae la población a 1 de enero; el resto de indicadores están vacíos.
+- **`DoublingTime`:** queda vacío cuando el crecimiento es igual o menor al 0,5 % anual.
+- **Territorios muy pequeños:** con menos de 200 nacimientos al año, el redondeo a miles distorsiona los cocientes.
+- **Enlace con PISA:** 590 de las 593 filas de PISA tienen país y año en WPP. Las 3 restantes son `OED`, que no existe en WPP.
+- **OtherVariants:** son unas 663 000 filas con 18 variantes de proyección, en dos familias:
+  - **Escenarios deterministas:** cambian un supuesto y dejan el resto como en el Medium. Por ejemplo, `High` y `Low` suman o restan hasta 0,5 hijos por mujer a la fecundidad, y en 2100 dan una población un 43 % mayor y un 32 % menor que el Medium (mediana entre países). Otros son `Constant fertility`, `Zero migration`, `Constant mortality`, `Momentum`...
+  - **Proyección probabilística:** `Median PI`, los intervalos de predicción del 80 % y del 95 % (`Lower/Upper 80 PI`, `Lower/Upper 95 PI`) y `Mean`. `Median PI` coincide con el Medium y `Mean` solo trae `TFR`, `LExMale` y `LExFemale`.
+  - **Cobertura desigual:** no todas las variantes traen todos los indicadores. Las probabilísticas no traen `NRR`, `SRB` ni muertes por sexo o infantiles, y varios escenarios no traen `LE15/65/80` ni las probabilidades de muerte `Q`.
+  - **Incertidumbre en 2025:** en los países de PISA, el intervalo del 95 % mide unos ±0,27 hijos en `TFR` y ±1,5 años en `LEx` (mediana).
+  - **Sensibilidad a largo plazo:** según el Medium, la población mundial llega a su máximo en 2084. Según el intervalo del 95 %, ese pico puede llegar en 2068 o no haberse alcanzado todavía en 2100.
+
+## Criterios de análisis (técnicos y éticos, ASA)
+
+Se aplican en todos los notebooks y en el informe:
+
+1. **Sin doble conteo:** para comparar o agregar países se filtra siempre `LocTypeName == "Country/Area"`. Los agregados (Mundo, regiones, grupos de ingreso) solo se usan como referencia y se guardan aparte.
+2. **Unidades explícitas:** cada eje y cada tabla indican su unidad. Las cifras absolutas se presentan en personas (miles × 1.000).
+3. **Hechos vs. supuestos:** 2023 es la frontera entre estimaciones y proyecciones. Cada hallazgo dice si se basa en estimaciones o en proyecciones y, en ese caso, con qué variante.
+4. **La variante media no es una certeza:** todo resultado posterior a 2023 se acompaña de su intervalo de predicción (`Lower/Upper 80/95 PI`) o de escenarios alternativos de `OtherVariants`.
+5. **Transparencia:** `02_limpieza` documenta los criterios de inclusión y exclusión de países (agregados, `OED`, Vaticano, territorios muy pequeños), el tratamiento de nulos y cuántas filas afecta cada decisión.
+6. **Sin selección a conveniencia:** los años de análisis (ciclos de PISA y la frontera 2023) se fijan de antemano. No se eligen variantes ni años para respaldar una conclusión ya decidida.
+7. **Calidad desigual de los datos:** en países con registros civiles incompletos o en conflicto, las estimaciones históricas se basan en censos antiguos o en modelos indirectos y tienen más error. Estos archivos no cuantifican ese error por país, así que se menciona en las limitaciones del informe.
+8. **Contexto y no estigmatización:** fecundidad, mortalidad infantil y migración se interpretan junto a sus determinantes socioeconómicos y geopolíticos. Se evitan el determinismo demográfico y las lecturas que estigmaticen regiones o flujos migratorios. Las correlaciones son descriptivas y no implican causalidad.
+9. **Reproducibilidad:** todo se carga directamente de los `.csv` y `.csv.gz` de `data/raw/` con `src/utils.py` (los `.gz`, con `compression="gzip"` y `encoding="utf-8-sig"`), sin pasos manuales. Si alguna vez se simula o se muestrea, se fija la semilla.
 
 ## Cómo ejecutarlo
 
@@ -57,7 +97,8 @@ En VS Code, abre un notebook y elige como kernel el Python de `.venv`. Para usar
 
 1. Coloca los datos originales en `data/raw/`.
 2. Ejecuta los notebooks en orden:
-   - `01_exploracion`: solo lee, no guarda nada.
+   - `00_unificacion_pisa`: genera `data/processed/pisa_unificado.csv`.
+   - `01_exploracion`: explora WPP2024 (Medium, Supplement y OtherVariants) y comprueba el enlace con PISA. Solo lee (`data/raw/` y `pisa_unificado.csv`), no guarda nada.
    - `02_limpieza`: genera el archivo limpio en `data/processed/`.
    - `03_visualizaciones`: genera las figuras en `figures/`.
 
