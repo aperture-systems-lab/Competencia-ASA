@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bitácora · ASA DataQuest 2026</title>
+<style>
+  :root {
+    --navy: #0b2545;
+    --azul: #1d4e89;
+    --azul-medio: #2a78d6;
+    --cyan: #00a6c8;
+    --cyan-claro: #e3f6fa;
+    --azul-claro: #edf3fb;
+    --fondo: #f6f8fb;
+    --papel: #ffffff;
+    --texto: #1b2533;
+    --texto-2: #4a5668;
+    --texto-3: #7a8699;
+    --borde: #d9e1ec;
+    --ok: #12805c;
+    --ok-fondo: #e4f5ee;
+    --pend: #b26a00;
+    --pend-fondo: #fdf1dd;
+    --alerta: #b4232c;
+    --alerta-fondo: #fbe9ea;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--texto);
+    font: 15px/1.6 "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+  /* ---------- encabezado ---------- */
+  header.portada {
+    background: linear-gradient(120deg, var(--navy) 0%, var(--azul) 60%, var(--cyan) 140%);
+    color: #fff;
+    padding: 48px 24px 40px;
+  }
+  .contenedor { max-width: 1040px; margin: 0 auto; }
+  .etiqueta {
+    display: inline-block;
+    font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,.45); border-radius: 999px;
+    padding: 3px 12px; margin-bottom: 14px;
+  }
+  header h1 { margin: 0 0 6px; font-size: 34px; font-weight: 700; letter-spacing: -.01em; }
+  header p.sub { margin: 0; font-size: 17px; color: #d6e8f7; }
+  .meta { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 24px; font-size: 14px; color: #d6e8f7; }
+  .meta b { color: #fff; font-weight: 600; }
+
+  /* ---------- navegación ---------- */
+  nav.indice {
+    position: sticky; top: 0; z-index: 5;
+    background: rgba(255,255,255,.96);
+    border-bottom: 1px solid var(--borde);
+    backdrop-filter: blur(6px);
+  }
+  nav.indice ul {
+    list-style: none; margin: 0 auto; padding: 0 24px; max-width: 1040px;
+    display: flex; gap: 4px; overflow-x: auto;
+  }
+  nav.indice a {
+    display: block; padding: 12px 12px; white-space: nowrap;
+    color: var(--texto-2); text-decoration: none; font-size: 14px;
+    border-bottom: 2px solid transparent;
+  }
+  nav.indice a:hover { color: var(--azul); border-bottom-color: var(--cyan); }
+
+  main { padding: 8px 24px 64px; }
+  section { margin-top: 44px; }
+  h2 {
+    font-size: 23px; color: var(--navy); margin: 0 0 6px;
+    padding-left: 14px; border-left: 4px solid var(--cyan);
+  }
+  h2 + p.lead { margin-top: 4px; }
+  h3 { font-size: 17px; color: var(--azul); margin: 28px 0 8px; }
+  p.lead { color: var(--texto-2); font-size: 16px; max-width: 760px; }
+  a { color: var(--azul-medio); }
+  code {
+    font-family: Consolas, "Cascadia Mono", Menlo, monospace; font-size: 13px;
+    background: var(--azul-claro); color: var(--navy);
+    padding: 1px 5px; border-radius: 4px;
+  }
+
+  /* ---------- tarjetas ---------- */
+  .tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 18px; }
+  .tarjeta {
+    background: var(--papel); border: 1px solid var(--borde); border-radius: 10px;
+    padding: 16px 18px; border-top: 3px solid var(--azul-medio);
+  }
+  .tarjeta.cyan { border-top-color: var(--cyan); }
+  .tarjeta .rotulo { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--texto-3); }
+  .tarjeta .valor { font-size: 19px; font-weight: 600; color: var(--navy); margin: 4px 0 2px; }
+  .tarjeta .nota { font-size: 13.5px; color: var(--texto-2); }
+
+  .panel {
+    background: var(--papel); border: 1px solid var(--borde); border-radius: 10px;
+    padding: 20px 22px; margin-top: 16px;
+  }
+  .aviso {
+    background: var(--cyan-claro); border: 1px solid #b6e6f1; border-left: 4px solid var(--cyan);
+    border-radius: 8px; padding: 14px 18px; margin-top: 16px; color: var(--navy);
+  }
+  .aviso.alerta { background: var(--alerta-fondo); border-color: #f1c4c7; border-left-color: var(--alerta); color: #5c1418; }
+  .aviso b { color: inherit; }
+
+  /* ---------- tablas ---------- */
+  .tabla-envoltura { overflow-x: auto; margin-top: 12px; border: 1px solid var(--borde); border-radius: 10px; background: var(--papel); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th {
+    background: var(--navy); color: #fff; text-align: left; font-weight: 600;
+    padding: 10px 14px; white-space: nowrap;
+  }
+  td { padding: 9px 14px; border-top: 1px solid var(--borde); vertical-align: top; }
+  tbody tr:nth-child(even) td { background: #f9fbfd; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  #historial td:first-child { white-space: nowrap; }
+
+  /* ---------- estado ---------- */
+  .chip {
+    display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .02em;
+    padding: 2px 10px; border-radius: 999px; white-space: nowrap;
+  }
+  .chip.ok { background: var(--ok-fondo); color: var(--ok); }
+  .chip.pend { background: var(--pend-fondo); color: var(--pend); }
+  .chip.curso { background: var(--cyan-claro); color: #00708a; }
+  .chip.no { background: #eef1f5; color: var(--texto-3); }
+
+  /* ---------- flujo del proyecto ---------- */
+  .flujo { display: flex; flex-wrap: nowrap; align-items: stretch; gap: 0; margin-top: 18px; }
+  .paso {
+    flex: 1 1 0; background: var(--papel); border: 1px solid var(--borde);
+    border-radius: 10px; padding: 14px 12px 12px; position: relative; min-width: 0;
+  }
+  .paso + .flecha { display: flex; align-items: center; padding: 0 6px; color: var(--cyan); font-size: 20px; }
+  .paso .n { font-size: 12px; color: var(--texto-3); font-family: Consolas, monospace; }
+  .paso .t { font-weight: 600; color: var(--navy); margin: 2px 0 8px; font-size: 14.5px; }
+  .paso.hecho { border-color: #bfe3d3; background: linear-gradient(180deg, #f2fbf7, #fff); }
+  .paso.actual { border: 2px solid var(--cyan); background: linear-gradient(180deg, var(--cyan-claro), #fff); }
+
+  /* ---------- cronograma ---------- */
+  .dia { display: grid; grid-template-columns: 150px 1fr; gap: 18px; margin-top: 14px; }
+  .dia .fecha {
+    background: var(--navy); color: #fff; border-radius: 10px; padding: 14px;
+    text-align: center; align-self: start;
+  }
+  .dia .fecha .d { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #9fc7ea; }
+  .dia .fecha .f { font-size: 22px; font-weight: 700; }
+  .dia .fecha .o { font-size: 13px; color: #d6e8f7; }
+  .dia.hecho .fecha { background: var(--ok); }
+  .dia.hecho .fecha .d { color: #c9eedd; }
+  .dia.final .fecha { background: linear-gradient(160deg, var(--azul), var(--cyan)); }
+  ul.tareas { list-style: none; margin: 0; padding: 0; background: var(--papel); border: 1px solid var(--borde); border-radius: 10px; }
+  ul.tareas li { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 10px 16px; border-top: 1px solid var(--borde); }
+  ul.tareas li:first-child { border-top: 0; }
+  ul.tareas .det { display: block; font-size: 13px; color: var(--texto-3); }
+
+  /* ---------- salidas de código ---------- */
+  pre {
+    background: #0d1b2e; color: #d7e6f5; border-radius: 10px; padding: 14px 16px;
+    overflow-x: auto; font: 12.5px/1.5 Consolas, "Cascadia Mono", Menlo, monospace;
+    border-left: 4px solid var(--cyan); margin: 10px 0 0;
+  }
+  pre .c { color: #6fd3e8; }
+
+  ol.preguntas { counter-reset: q; list-style: none; padding: 0; margin: 12px 0 0; }
+  ol.preguntas li {
+    counter-increment: q; position: relative; padding: 10px 14px 10px 52px;
+    background: var(--papel); border: 1px solid var(--borde); border-radius: 8px; margin-top: 8px;
+  }
+  ol.preguntas li::before {
+    content: counter(q); position: absolute; left: 14px; top: 10px;
+    width: 26px; height: 26px; border-radius: 50%; background: var(--azul); color: #fff;
+    font-size: 13px; font-weight: 700; display: grid; place-items: center;
+  }
+  ol.preguntas li.prioridad::before { background: var(--cyan); }
+
+  footer { border-top: 1px solid var(--borde); color: var(--texto-3); font-size: 13px; padding: 20px 24px 40px; }
+
+  @media (max-width: 900px) {
+    .flujo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .flecha { display: none !important; }
+  }
+  @media (max-width: 640px) {
+    header h1 { font-size: 26px; }
+    .dia { grid-template-columns: 1fr; gap: 8px; }
+    .flujo { grid-template-columns: 1fr 1fr; }
+  }
+  @media print {
+    nav.indice { display: none; }
+    body { background: #fff; }
+    section { break-inside: avoid-page; }
+    header.portada { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    th, .dia .fecha, .chip, pre { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<header class="portada">
+  <div class="contenedor">
+    <span class="etiqueta">American Statistical Association · DataQuest 2026</span>
+    <h1>Bitácora del proyecto</h1>
+    <p class="sub">Demografía mundial (ONU, WPP 2024) y desempeño educativo (OCDE, PISA)</p>
+    <div class="meta">
+      <span>Equipo: <b>Aperture</b></span>
+      <span>Universidad Nacional de Colombia, sede Medellín</span>
+      <span>Última actualización: <b>27 de octubre de 2026</b></span>
+      <span>Entrega: <b>viernes 30 de octubre, 5:00 p. m.</b></span>
+    </div>
+  </div>
+</header>
+
+<nav class="indice" aria-label="Contenido">
+  <ul>
+    <li><a href="#competencia">La competencia</a></li>
+    <li><a href="#pregunta">Pregunta y método</a></li>
+    <li><a href="#estado">Estado y plan</a></li>
+    <li><a href="#hallazgos">Hallazgos</a></li>
+    <li><a href="#revision">Control de calidad</a></li>
+    <li><a href="#decisiones">Decisiones</a></li>
+    <li><a href="#glosario">Glosario</a></li>
+    <li><a href="#historial">Historial</a></li>
+  </ul>
+</nav>
+
+<main class="contenedor">
+
+<!-- ======================================================= -->
+<section id="competencia">
+  <h2>La competencia</h2>
+  <p class="lead">El equipo debe entregar un video de máximo cinco minutos con un análisis de los datos de población de la ONU que responda al menos una de las preguntas de la sección 6 de la guía de la ASA, o que analice a fondo una región o un grupo de países. Se permiten datos externos si se siguen las pautas éticas de la ASA.</p>
+  <div class="aviso"><b>Sobre esta bitácora:</b> registro de trabajo del equipo. Explica la pregunta elegida, cómo se está estudiando, qué se ha encontrado y qué falta. Cada cambio queda anotado en el <a href="#historial">historial</a>.</div>
+
+  <div class="tarjetas">
+    <div class="tarjeta">
+      <div class="rotulo">Entregable</div>
+      <div class="valor">Video ≤ 5:00</div>
+      <div class="nota">Si dura más de 5 minutos, se descalifica al recibirlo.</div>
+    </div>
+    <div class="tarjeta">
+      <div class="rotulo">Idioma</div>
+      <div class="valor">Español + subtítulos en inglés</div>
+      <div class="nota">O todo en inglés. Recomendado: todo el texto en pantalla en inglés.</div>
+    </div>
+    <div class="tarjeta cyan">
+      <div class="rotulo">Fecha límite</div>
+      <div class="valor">30 oct · 5:00 p. m.</div>
+      <div class="nota">Meta interna: enviarlo antes del mediodía.</div>
+    </div>
+    <div class="tarjeta cyan">
+      <div class="rotulo">Datos</div>
+      <div class="valor">ONU WPP 2024 + PISA</div>
+      <div class="nota">PISA es externo: permitido siguiendo la Guía Ética.</div>
+    </div>
+  </div>
+
+  <h3>Reglas confirmadas por la coordinación (correo del 26 de octubre)</h3>
+  <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Tema</th><th>Regla</th></tr></thead>
+      <tbody>
+        <tr><td>Alcance</td><td><b>No hay que resolver las seis preguntas.</b> Basta con enfocarse en al menos una pregunta específica, o en análisis de categorías de <code>Location</code>: una región, un continente, un país o un grupo de países.</td></tr>
+        <tr><td>Bases</td><td>Basta con analizar la base <b>Medium</b>. <code>OtherVariants</code> es opcional.</td></tr>
+        <tr><td>Nombre del archivo</td><td><code>ASA</code> + <code>PR</code> (pregrado) o <code>PO</code> (posgrado) + nombre del equipo → <b><code>ASAPRAperture</code></b></td></tr>
+        <tr><td>Formato</td><td>Libre: no se exigen diapositivas ni un número fijo de ellas.</td></tr>
+        <tr><td>Plazo</td><td>Viernes 30 de octubre, 5:00 p. m. La ASA revisa la hora de recepción. Fuera de plazo o con más de 5 minutos: descalificado.</td></tr>
+              </tbody>
+    </table>
+  </div>
+
+  <h3>Premios y qué implica cada uno</h3>
+  <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Premio</th><th>Qué se premia</th><th>Cómo lo vamos a atender</th></tr></thead>
+      <tbody>
+        <tr><td><b>Best Statistical Insight</b></td><td>Una metodología sólida y hallazgos bien sustentados</td><td>Una pregunta central clara, métodos justificados y pruebas de robustez</td></tr>
+        <tr><td><b>Best Consideration of Ethics</b></td><td>Cumplir la <a href="competencia/ASA_Ethical_Guidelines_2022.pdf">Guía Ética de la ASA (2022)</a></td><td>Sesgo de selección de PISA, estimación frente a proyección, lenguaje no estigmatizante, código reproducible</td></tr>
+        <tr><td><b>Best Data Visualization</b></td><td>Gráficos claros y que comuniquen</td><td>De 4 a 6 gráficos con el estilo común de <code>src/estilo.py</code> y un título que diga la conclusión</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13.5px;color:var(--texto-3);margin-top:10px">Documentos de referencia en <code>docs/competencia/</code>: guía <em>Getting Started</em>, descripción del suplemento y Guía Ética de la ASA.</p>
+</section>
+
+<!-- ======================================================= -->
+<section id="pregunta">
+  <h2>Pregunta y método</h2>
+  <div class="panel" style="border-left:4px solid var(--cyan)">
+    <div style="font-size:19px;font-weight:600;color:var(--navy);line-height:1.4">Entre 2006 y 2025, mientras bajaban la fecundidad y la mortalidad infantil en América Latina, ¿se redujo o creció la desigualdad de aprendizaje dentro de los países?</div>
+    <div style="margin-top:8px;color:var(--texto-2);font-style:italic">As fertility and child mortality fell across Latin America between 2006 and 2025, did learning inequality within countries shrink or grow?</div>
+    <div style="margin-top:12px;font-size:13.5px;color:var(--texto-3)">Elegida por el equipo el 27 de octubre de 2026 · Responde a las preguntas 1 y 7 de la guía de la ASA (estructura de la población en el tiempo; fecundidad y mortalidad en la trayectoria de los países)</div>
+  </div>
+
+  <div class="aviso"><b>Eje de la historia (elegido el 27 de octubre):</b> «Misma demografía, caminos distintos». La fecundidad y la mortalidad infantil bajaron en los 8 países, pero la desigualdad de aprendizaje no siguió un patrón común: depende de la materia y del país. Perú muestra que la brecha se puede cerrar hacia arriba.</div>
+
+  <h3>Cómo se estudia</h3>
+  <p>La pregunta une dos fuentes: la base de población de la ONU (la de la competencia) y las pruebas PISA de la OCDE (dato externo permitido). El trabajo sigue cinco pasos, cada uno en un notebook del repo:</p>
+  <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Paso</th><th>Notebook</th><th>Qué hace</th></tr></thead>
+      <tbody>
+        <tr><td>1. Preparar las fuentes</td><td><code>00</code> a <code>02</code></td><td>Unifica PISA, explora la base de la ONU, separa países de agregados (evita el doble conteo) y une ambas fuentes por país y año</td></tr>
+        <tr><td>2. Datos de América Latina</td><td><code>02b_america_latina</code></td><td>Series 1950–2100 de fecundidad y mortalidad infantil para la región, y el panel de los 8 países con su desigualdad de aprendizaje y su cobertura en cada ciclo de PISA</td></tr>
+        <tr><td>3. Tendencias</td><td><code>02c_tendencias_america_latina</code></td><td>Gráficos por país, cambios entre 2009 y 2025, relación con la demografía y primeras pruebas de robustez</td></tr>
+        <tr><td>4. Análisis</td><td><code>02d_analisis_america_latina</code></td><td>Cómo cambió la brecha (cambios oficiales de la OCDE), corrección por cobertura y demografía del año de nacimiento</td></tr>
+        <tr><td>5. Figuras finales</td><td><code>03_visualizaciones</code></td><td>Las figuras del video, en inglés</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Cómo se mide cada parte</h3>
+  <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Parte de la pregunta</th><th>Medida propuesta</th><th>Fuente</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>«Bajaban la fecundidad»</td><td><code>TFR</code>, hijos por mujer</td><td>ONU, serie 1950–2100</td><td><span class="chip ok">Definida</span></td></tr>
+        <tr><td>«Y la mortalidad infantil»</td><td><code>IMR</code>, muertes de menores de 1 año por cada 1.000 nacidos vivos</td><td>ONU, serie 1950–2100</td><td><span class="chip ok">Definida</span></td></tr>
+        <tr><td>«Desigualdad de aprendizaje dentro de los países»</td><td>Brecha P90 − P10 (distancia entre el 10 % con mejor y con peor puntaje) y % de estudiantes bajo el nivel 2</td><td>Tablas oficiales de tendencia de la OCDE (I.B1.2a.33–41)</td><td><span class="chip ok">Confirmada</span></td></tr>
+        <tr><td>Materia</td><td>Matemáticas como principal; lectura y ciencias como comprobación de robustez</td><td>PISA</td><td><span class="chip ok">Confirmada</span></td></tr>
+        <tr><td>Países</td><td>Panel principal: los 8 con PISA en al menos 6 de los 7 ciclos (Argentina, Brasil, Chile, Colombia, Costa Rica, México, Perú, Uruguay). Los demás, solo como contexto. Período 2009–2025; 2006 como contexto</td><td>PISA + ONU</td><td><span class="chip ok">Confirmada</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Por qué estos 8 países: ciclos de PISA disponibles, 2006–2025</h3>
+  <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>País</th><th class="num">2006</th><th class="num">2009</th><th class="num">2012</th><th class="num">2015</th><th class="num">2018</th><th class="num">2022</th><th class="num">2025</th><th class="num">Ciclos</th></tr></thead>
+      <tbody>
+        <tr><td>Argentina · Brasil · Chile · Colombia · México · Uruguay</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num"><b>7</b></td></tr>
+        <tr><td>Costa Rica · Perú</td><td class="num">—</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num"><b>6</b></td></tr>
+        <tr><td>República Dominicana</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">4</td></tr>
+        <tr><td>Panamá</td><td class="num">—</td><td class="num">✓</td><td class="num">—</td><td class="num">—</td><td class="num">✓</td><td class="num">✓</td><td class="num">—</td><td class="num">3</td></tr>
+        <tr><td>Paraguay · El Salvador · Guatemala · Trinidad y Tobago</td><td colspan="7" style="text-align:center">2 ciclos cada uno</td><td class="num">2</td></tr>
+        <tr><td>Ecuador · Jamaica</td><td colspan="7" style="text-align:center">1 ciclo</td><td class="num">1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Riesgos y cuidados</h3>
+  <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Riesgo</th><th>Cómo se maneja</th></tr></thead>
+      <tbody>
+        <tr><td>Solo 8 países en el panel principal</td><td>Análisis descriptivo: tendencias por país y correlaciones de los cambios, sin pruebas de significancia fuertes. Se dice explícitamente en el video</td></tr>
+        <tr><td>Que vayan juntas no significa que una cause la otra</td><td>Hablar de «coincidencia en el tiempo», nunca de efecto. Mencionar posibles variables de confusión (ingreso, gasto educativo, cobertura escolar)</td></tr>
+        <tr><td>Choque de la pandemia en 2022</td><td>Mostrar 2022 marcado y comprobar si la conclusión cambia sin ese ciclo</td></tr>
+        <tr><td>Cobertura escolar creciente</td><td>Se agregó el índice de cobertura 3 de la OCDE (tabla I.A2.1) y se calcularon los percentiles altos de toda la generación (<code>02d</code>, sección 2)</td></tr>
+        <tr><td>Calidad de algunos ciclos</td><td>Argentina 2015 se excluye: la OCDE lo considera no comparable (su cobertura cayó a 0,55) y su tabla de tendencias ya lo publica sin dato</td></tr>
+        <tr><td>2025 es proyección en la base de la ONU</td><td>Marcarlo en los gráficos y en el texto</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ======================================================= -->
+<section id="estado">
+  <h2>Estado y plan</h2>
+  <p class="lead">Los datos están preparados, el análisis principal está hecho y el eje de la historia está elegido. Lo que sigue es completar la robustez, hacer las figuras finales, escribir el informe y grabar el video.</p>
+
+  <div class="flujo">
+    <div class="paso hecho"><div class="n">notebooks/00</div><div class="t">Unificación PISA</div><span class="chip ok">Hecho</span></div>
+    <div class="flecha">→</div>
+    <div class="paso hecho"><div class="n">notebooks/01</div><div class="t">Exploración</div><span class="chip ok">Hecho</span></div>
+    <div class="flecha">→</div>
+    <div class="paso hecho"><div class="n">notebooks/02</div><div class="t">Limpieza</div><span class="chip ok">Hecho</span></div>
+    <div class="flecha">→</div>
+    <div class="paso hecho"><div class="n">notebooks/02b–02d</div><div class="t">Datos, tendencias y análisis de América Latina</div><span class="chip ok">Hecho</span></div>
+    <div class="flecha">→</div>
+    <div class="paso actual"><div class="n">notebooks/03</div><div class="t">Figuras finales</div><span class="chip curso">Siguiente</span></div>
+    <div class="flecha">→</div>
+    <div class="paso"><div class="n">REPORT.md → video/</div><div class="t">Informe y video</div><span class="chip pend">Pendiente</span></div>
+  </div>
+
+  <h3>Tareas por día</h3>
+  <div class="dia hecho">
+    <div class="fecha"><div class="d">Lunes</div><div class="f">26 oct</div><div class="o">Preparación · completo</div></div>
+    <ul class="tareas">
+      <li><span>Unificar PISA, explorar y limpiar la base<span class="det">Notebooks 00, 01 y 02</span></span><span class="chip ok">Hecho</span></li>
+      <li><span>Verificar la reproducibilidad y los datos<span class="det">Ver «Control de calidad»</span></span><span class="chip ok">Hecho</span></li>
+      <li><span>Pasar los documentos de la competencia al repo<span class="det"><code>docs/competencia/</code></span></span><span class="chip ok">Hecho</span></li>
+      <li><span>Leer los notebooks 01 y 02 para entender cada decisión</span><span class="chip ok">Hecho</span></li>
+      <li><span>Proponer y comparar preguntas posibles</span><span class="chip ok">Hecho</span></li>
+    </ul>
+  </div>
+
+  <div class="dia hecho">
+    <div class="fecha"><div class="d">Martes</div><div class="f">27 oct</div><div class="o">Definir y preparar · completo</div></div>
+    <ul class="tareas">
+      <li><span>Elegir la pregunta final<span class="det">Ver «Pregunta y método»</span></span><span class="chip ok">Hecho</span></li>
+      <li><span>Confirmar las medidas, la materia y los países del panel<span class="det">Decidido antes de mirar los resultados (Guía Ética B3)</span></span><span class="chip ok">Hecho</span></li>
+      <li><span>Verificar el ciclo de Argentina 2015<span class="det">Se excluye; la OCDE lo publica sin dato</span></span><span class="chip ok">Hecho</span></li>
+      <li><span>Crear <code>notebooks/02b_america_latina.ipynb</code><span class="det"><code>al_wpp_1950_2100.csv</code> (7.701 filas) y <code>al_panel_pisa.csv</code> (168 filas)</span></span><span class="chip ok">Hecho</span></li>
+      <li><span>Agregar la cobertura de PISA<span class="det"><code>data/raw/PISA2025_anexoA2_cobertura.xlsx</code> (OCDE, tabla I.A2.1)</span></span><span class="chip ok">Hecho</span></li>
+      <li><span>Gráficos exploratorios y primera robustez<span class="det"><code>notebooks/02c_tendencias_america_latina.ipynb</code> (ver «Hallazgos preliminares»)</span></span><span class="chip ok">Hecho</span></li>
+    </ul>
+  </div>
+
+  <div class="dia">
+    <div class="fecha"><div class="d">Miércoles</div><div class="f">28 oct</div><div class="o">Análisis y gráficos</div></div>
+    <ul class="tareas">
+      <li><span>Definir el eje de la historia<span class="det">«Misma demografía, caminos distintos», tras comprobar que el cierre hacia abajo solo ocurre en matemáticas</span></span><span class="chip ok">Hecho</span></li>
+      <li><span>Probar la demografía al nacer de los evaluados<span class="det">No muestra una relación consistente (<code>02d</code>, sección 3)</span></span><span class="chip ok">Hecho</span></li>
+      <li><span>Pruebas de robustez<span class="det">Ya hecho: las tres materias, error de enlace y cobertura. Falta: quitar un país a la vez</span></span><span class="chip pend">Pendiente</span></li>
+      <li><span>Contexto de la ONU para el cierre<span class="det">¿Qué se proyecta para la región hasta 2050? Con su incertidumbre</span></span><span class="chip pend">Pendiente</span></li>
+      <li><span>De 4 a 6 figuras finales en <code>notebooks/03_visualizaciones</code><span class="det">Con <code>src/estilo.py</code>, texto en inglés, guardadas en <code>figures/</code></span></span><span class="chip pend">Pendiente</span></li>
+      <li><span>Llenar <code>REPORT.md</code></span><span class="chip pend">Pendiente</span></li>
+    </ul>
+  </div>
+
+  <div class="dia">
+    <div class="fecha"><div class="d">Jueves</div><div class="f">29 oct</div><div class="o">Guion y grabación</div></div>
+    <ul class="tareas">
+      <li><span>Escribir el guion<span class="det">Unas 650 palabras: pregunta → datos → método → hallazgos → ética y limitaciones → conclusión</span></span><span class="chip pend">Pendiente</span></li>
+      <li><span>Armar el material visual con las figuras (texto en inglés)</span><span class="chip pend">Pendiente</span></li>
+      <li><span>Grabar y cronometrar<span class="det">Objetivo: entre 4:30 y 4:45</span></span><span class="chip pend">Pendiente</span></li>
+    </ul>
+  </div>
+
+  <div class="dia final">
+    <div class="fecha"><div class="d">Viernes</div><div class="f">30 oct</div><div class="o">Entrega · 5:00 p. m.</div></div>
+    <ul class="tareas">
+      <li><span>Subtítulos en inglés<span class="det">Traducir el guion y sincronizarlo</span></span><span class="chip pend">Pendiente</span></li>
+      <li><span>Comprobar que el video dure menos de 5:00</span><span class="chip pend">Pendiente</span></li>
+      <li><span>Enviar el video como <code>ASAPRAperture</code><span class="det">Meta: antes del mediodía</span></span><span class="chip pend">Pendiente</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ======================================================= -->
+<section id="hallazgos">
+  <h2>Hallazgos</h2>
+  <p class="lead">Mientras la fecundidad y la mortalidad infantil bajaron en los 8 países, la desigualdad de aprendizaje no siguió un patrón común: depende de la materia y del país, y no se relaciona de forma consistente con el cambio demográfico. Detalle en <code>notebooks/02c</code> y <code>02d</code>; con 8 países, los resultados describen, no prueban.</p>
+
+  <h3>1. La demografía sí cambió igual en todos</h3>
+  <p>Entre 2009 y 2025 la fecundidad bajó entre 0,2 hijos por mujer (Brasil) y 0,9 (Argentina), y la mortalidad infantil cayó entre un 32 % y un 42 % en los 8 países. La cobertura de PISA subió entre 9 y 20 puntos porcentuales en todos.</p>
+
+  <h3>2. La desigualdad de aprendizaje no: depende de la materia</h3>
+  <p>Cambio de la brecha P90 − P10 entre 2009 y 2025, según cómo se movieron los rezagados (percentil 10) y los mejores (percentil 90). Cambios oficiales de la OCDE, con el error de enlace entre ciclos incluido.</p>
+  <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Tipo de cambio</th><th>Qué significa</th><th class="num">Matemáticas</th><th class="num">Lectura</th><th class="num">Ciencias</th></tr></thead>
+      <tbody>
+        <tr><td><b>Cierre hacia arriba</b></td><td>La brecha se cierra porque los rezagados suben</td><td class="num">1</td><td class="num">2</td><td class="num">4</td></tr>
+        <tr><td><b>Cierre hacia abajo</b></td><td>La brecha se cierra porque los mejores caen más</td><td class="num"><b>5</b></td><td class="num">2</td><td class="num">0</td></tr>
+        <tr><td><b>Apertura hacia arriba</b></td><td>La brecha se abre porque los mejores suben</td><td class="num">1</td><td class="num">2</td><td class="num">4</td></tr>
+        <tr><td><b>Apertura hacia abajo</b></td><td>La brecha se abre porque los rezagados caen más</td><td class="num">1</td><td class="num">2</td><td class="num">0</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul>
+    <li><b>Matemáticas:</b> la brecha se cerró hacia abajo en Argentina, México, Uruguay, Chile y Costa Rica. El percentil 90 cayó con claridad en 5 países y el % bajo el nivel 2 subió con claridad en 5.</li>
+    <li><b>Ciencias:</b> ningún país cerró la brecha hacia abajo y ningún percentil 90 cayó con claridad. En Brasil, Chile, Colombia y Costa Rica se abrió porque los mejores mejoraron.</li>
+    <li><b>Lectura:</b> no hay un patrón dominante.</li>
+  </ul>
+
+  <h3>3. Perú, la excepción constante</h3>
+  <p>Es el único país que cerró la brecha hacia arriba en las tres materias: sus estudiantes rezagados mejoraron 34 puntos en matemáticas, 37 en lectura y 47 en ciencias.</p>
+
+  <h3>4. Parte del cambio es un efecto de la cobertura</h3>
+  <p>Hoy llegan a PISA jóvenes que antes no estaban escolarizados a los 15 años, y eso baja mecánicamente los percentiles observados. Bajo el supuesto de que los no cubiertos no estarían en el 25 % superior de su generación, se calcularon los percentiles altos de toda la generación:</p>
+  <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Materia</th><th class="num">Cambio del P90 observado (mediana)</th><th class="num">Cambio del P90 de toda la generación (mediana)</th><th class="num">Países donde la parte alta de la generación bajó</th></tr></thead>
+      <tbody>
+        <tr><td>Matemáticas</td><td class="num">−24,2</td><td class="num">−13,1</td><td class="num">5 de 8</td></tr>
+        <tr><td>Lectura</td><td class="num">−3,8</td><td class="num">+6,6</td><td class="num">3 de 8</td></tr>
+        <tr><td>Ciencias</td><td class="num">+6,8</td><td class="num">+19,0</td><td class="num">1 de 8</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>La cobertura explica cerca de la mitad de la caída de matemáticas, pero no toda: el 10 % superior de la generación retrocedió en México (−35), Argentina (−21), Chile (−18), Uruguay (−17) y Costa Rica (−9).</p>
+
+  <h3>5. La demografía no explica estos caminos</h3>
+  <ul>
+    <li><b>Entre países:</b> los que más redujeron su fecundidad o su mortalidad infantil no son los que más cambiaron su brecha. Las correlaciones van de −0,36 a 0,62 según la materia y el indicador, cambian de signo y ninguna es significativa (n = 8).</li>
+    <li><b>Dentro de cada país:</b> solo en matemáticas aparecen relaciones (ciclos con más fecundidad o más mortalidad infantil, brecha mayor), y no se repiten en lectura ni en ciencias. Al controlar la cobertura, solo queda la de la fecundidad.</li>
+    <li><b>Al nacer:</b> la fecundidad y la mortalidad infantil del año de nacimiento de los evaluados (ciclo − 15) tampoco muestran una relación consistente; la que aparece en matemáticas desaparece al controlar la cobertura.</li>
+    <li>De 24 modelos, 5 dan p &lt; 0,05, todos en matemáticas; por azar se esperaría alrededor de 1.</li>
+  </ul>
+</section>
+
+<!-- ======================================================= -->
+<section id="revision">
+  <h2>Control de calidad de la preparación de datos</h2>
+  <p class="lead">Antes de construir el análisis sobre los notebooks 00 a 02, el equipo verificó que se reproducen y que sus datos coinciden con las fuentes oficiales.</p>
+
+  <h3>1. ¿Se reproduce?</h3>
+  <p>Se ejecutó <code>02_limpieza</code> en una copia aparte del repo y se comparó lo que genera con los archivos guardados en <code>data/processed/</code>.</p>
+<pre>Guardado: data\processed\wpp_paises_pisa.csv (2,133 filas)
+Guardado: data\processed\wpp_agregados_pisa.csv (153 filas)
+Guardado: data\processed\pisa_wpp.csv (590 filas)
+Guardado: data\processed\diccionario_wpp.csv (44 filas)
+<span class="c">IGUAL  data/processed/diccionario_wpp.csv
+IGUAL  data/processed/pisa_unificado.csv
+IGUAL  data/processed/pisa_wpp.csv
+IGUAL  data/processed/wpp_agregados_pisa.csv
+IGUAL  data/processed/wpp_paises_pisa.csv</span></pre>
+  <p>Los cinco archivos salen idénticos, byte por byte.</p>
+
+  <h3>2. ¿Los datos coinciden con las fuentes?</h3>
+  <p>Los archivos de la ONU del repo son idénticos a los oficiales (el suplemento solo difiere en los saltos de línea que Git cambia en Windows). PISA combina el Banco Mundial (2000–2018) con la OCDE (2022 y 2025). Esos puntajes se compararon con las tablas oficiales de tendencia de la OCDE (Volumen I de 2025, tablas I.B1.2a.36–38).</p>
+<pre>      valores  dif. media  dif. máxima   <span class="c">(en puntos PISA)</span>
+2000       39        0.40        14.94
+2003       72        0.00         0.01
+2006      156        0.00         0.00
+2009      184        0.00         0.00
+2012      169        0.06         3.59
+2015      184        0.00         0.02
+2018      205        0.00         0.00
+2022      228        0.09         6.86
+2025      259        0.00         0.00</pre>
+  <p>De 1.496 valores comparables, casi todos coinciden exactamente. Las diferencias son tres casos que la OCDE corrigió después:</p>
+  <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Caso</th><th>Año</th><th class="num">Repo</th><th class="num">OCDE (revisado)</th><th>Comentario</th></tr></thead>
+      <tbody>
+        <tr><td>Austria, lectura</td><td>2000</td><td class="num">507,0</td><td class="num">492,1</td><td>El valor del Banco Mundial es el original, sin el ajuste posterior de la OCDE</td></tr>
+        <tr><td>Palestina, 3 materias</td><td>2022</td><td class="num">349–369</td><td class="num">356–376</td><td>Ya estaba identificado en <code>00_unificacion_pisa</code>; se optó por el valor publicado en el libro de 2022</td></tr>
+        <tr><td>Brasil, 3 materias</td><td>2012</td><td class="num">391–410</td><td class="num">389–407</td><td>Diferencia de 3 a 4 puntos</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="aviso"><b>Conclusión:</b> la preparación de datos es reproducible y coincide con las fuentes oficiales. La única limitación para la pregunta final era que la limpieza dejaba la base de la ONU solo en los años de PISA; el notebook <code>02b</code> agrega las series completas sin modificar lo existente.</div>
+</section>
+
+<!-- ======================================================= -->
+<section id="decisiones">
+  <h2>Registro de decisiones y limitaciones</h2>
+  <p class="lead">Cada decisión queda anotada con su justificación y el principio de la Guía Ética de la ASA que la respalda. Es la base del segmento de ética del video.</p>
+  <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Decisión o limitación</th><th>Justificación</th><th>Guía Ética</th></tr></thead>
+      <tbody>
+        <tr><td>Usar solo filas de países</td><td>Evita el doble conteo; la suma coincide con la fila «World» en todos los años</td><td>B1</td></tr>
+        <tr><td>Excluir el año 2101</td><td>Solo trae la población al 1 de enero</td><td>B1</td></tr>
+        <tr><td>Separar estimación (≤ 2023) y proyección (≥ 2024)</td><td>Las proyecciones son escenarios, no hechos; PISA 2025 se cruza con datos proyectados</td><td>B2, D10</td></tr>
+        <tr><td>Acompañar las proyecciones con su incertidumbre</td><td>La variante media no es una certeza</td><td>B2</td></tr>
+        <tr><td>No imputar faltantes</td><td>Son muy pocos y todos tienen explicación</td><td>B1</td></tr>
+        <tr><td>Identificar lugares por código, no por nombre</td><td>Hay nombres repetidos con códigos distintos, y la ONU y la OCDE escriben distinto algunos países</td><td>B1</td></tr>
+        <tr><td>Excluir las filas con cobertura parcial de PISA</td><td>PISA evaluó una ciudad o algunas regiones, pero la demografía es de todo el país</td><td>B1, B2</td></tr>
+        <tr><td>PISA como complemento, no como eje</td><td>Cubre el 33,6 % de la población mundial; hay posible confusión por el nivel de desarrollo</td><td>B2, C3, D6</td></tr>
+        <tr><td>Conservar los valores extremos reales</td><td>Por ejemplo, la migración de Qatar o la densidad de Macao son datos reales, no errores</td><td>A2</td></tr>
+        <tr><td>Lenguaje no estigmatizante</td><td>Interpretar fecundidad, mortalidad y migración junto a sus determinantes</td><td>D6</td></tr>
+        <tr><td>Usar las tablas oficiales de tendencia de la OCDE para la pregunta final</td><td>Una sola fuente, valores revisados y comparables entre ciclos, con error estándar</td><td>B1, B2</td></tr>
+        <tr><td>Panel de 8 países, 2009–2025; medidas y materia fijadas antes de ver resultados</td><td>Son los países con los 6 ciclos completos; evita elegir el panel según lo que convenga</td><td>B3, A4</td></tr>
+        <tr><td>Excluir Argentina 2015</td><td>No comparable según la OCDE (cobertura de la muestra de 0,55)</td><td>B1</td></tr>
+        <tr><td>Agregar el índice de cobertura de PISA</td><td>Evita confundir inclusión escolar con deterioro del aprendizaje</td><td>B2, D6</td></tr>
+        <tr><td>Reportar las tres materias, no solo matemáticas</td><td>El cierre de la brecha hacia abajo solo ocurre en matemáticas; mostrar solo esa materia sería seleccionar el resultado conveniente</td><td>A4, B3</td></tr>
+        <tr><td>Tipología del cambio de la brecha fijada antes de ver los resultados</td><td>Cierre o apertura, hacia arriba o hacia abajo, según el movimiento de los percentiles 10 y 90; «claro» = más de 1,96 errores estándar</td><td>B3</td></tr>
+        <tr><td>Usar los cambios oficiales de la OCDE</td><td>Sus errores estándar incluyen el error de enlace entre ciclos</td><td>B1, B2</td></tr>
+        <tr><td>Supuesto para corregir por cobertura</td><td>Los jóvenes no cubiertos no estarían en el 25 % superior de su generación; solo se corrigen los percentiles altos</td><td>B2</td></tr>
+        <tr><td>Declarar el número de pruebas</td><td>36 pruebas en total (24 modelos y 12 correlaciones); un resultado cuenta si se repite entre materias, no por un valor p aislado</td><td>B3</td></tr>
+        <tr><td>Eje «Misma demografía, caminos distintos»</td><td>Es la conclusión que sostienen todas las materias, no solo una</td><td>A2, C2</td></tr>
+        <tr><td>Revisiones de PISA (Austria 2000, Brasil 2012, Palestina 2022)</td><td>Pequeñas diferencias entre fuentes; se documentan</td><td>B1, B5</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ======================================================= -->
+<section id="glosario">
+  <h2>Glosario</h2>
+  <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Término</th><th>Qué significa</th><th>Ejemplo en el proyecto</th></tr></thead>
+      <tbody>
+        <tr><td>Panel de datos</td><td>Muchas unidades observadas en muchos momentos</td><td>237 países × 151 años</td></tr>
+        <tr><td>Agregado</td><td>Fila que resume a varios países</td><td>World, South America, High-income</td></tr>
+        <tr><td>Doble conteo</td><td>Sumar lo mismo más de una vez</td><td>Sumar Colombia y también South America</td></tr>
+        <tr><td>ISO3 · LocID · ParentID</td><td>Código de país de 3 letras · código numérico de la ONU · código del lugar que lo contiene</td><td>COL · 170 · 931 (South America)</td></tr>
+        <tr><td>Llave y <em>merge</em></td><td>Columnas que identifican cada fila y permiten unir tablas</td><td>ONU + PISA por <code>ISO3_code</code> y <code>Time</code></td></tr>
+        <tr><td>Estimación y proyección</td><td>Calculada con censos y encuestas frente a un escenario futuro bajo supuestos</td><td>1950–2023 frente a 2024–2100</td></tr>
+        <tr><td>Percentil 10 y 90 (P10, P90)</td><td>Puntaje por debajo del cual queda el 10 % (o el 90 %) de los estudiantes del país</td><td>Brecha P90 − P10: distancia entre los mejores y los más rezagados</td></tr>
+        <tr><td>Nivel 2 de PISA</td><td>Nivel mínimo de competencia que la OCDE considera básico para desenvolverse</td><td>% bajo el nivel 2: jóvenes que no alcanzan ese mínimo</td></tr>
+        <tr><td>Índice de cobertura 3</td><td>Proporción de todos los jóvenes de 15 años del país que representa la muestra de PISA</td><td>Si sube, entran a la prueba jóvenes que antes no estaban escolarizados</td></tr>
+        <tr><td>Efectos fijos por país</td><td>Modelo que compara cada país consigo mismo en el tiempo, sin mezclar diferencias permanentes entre países</td><td>¿Cuando baja la fecundidad de un país, su brecha sube o baja?</td></tr>
+        <tr><td>Cierre hacia arriba / hacia abajo</td><td>La brecha se achica porque los rezagados suben (arriba) o porque los mejores caen más (abajo)</td><td>Perú cerró hacia arriba en las tres materias</td></tr>
+        <tr><td>Error de enlace</td><td>Incertidumbre adicional al comparar puntajes de ciclos distintos de PISA, porque las escalas se enlazan con preguntas comunes</td><td>Incluido en los cambios oficiales de la OCDE</td></tr>
+        <tr><td>Comparaciones múltiples</td><td>Al hacer muchas pruebas, algunas salen significativas solo por azar</td><td>De 24 modelos, se esperaba alrededor de 1 con p &lt; 0,05</td></tr>
+        <tr><td>Intervalo de predicción (PI)</td><td>Rango donde se espera el valor futuro con cierta probabilidad</td><td>Lower/Upper 80 PI y 95 PI</td></tr>
+        <tr><td>Sesgo de selección</td><td>Los que entran a la muestra no se parecen al total</td><td>Los países de PISA son más ricos que el promedio</td></tr>
+        <tr><td>Variable de confusión</td><td>Algo de fondo que mueve dos variables a la vez</td><td>El desarrollo afecta a la fecundidad y a PISA</td></tr>
+        <tr><td>Falacia ecológica</td><td>Concluir sobre personas a partir de datos de países</td><td>—</td></tr>
+        <tr><td>TFR · LEx · LE60 · MedianAgePop · CNMR</td><td>Hijos por mujer · esperanza de vida al nacer · a los 60 · edad mediana · migración neta por cada 1.000</td><td>Colombia 2023: 1,65 · 77,7 · — · 31,6 · —</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ======================================================= -->
+<section id="historial">
+  <h2>Historial</h2>
+  <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Fecha</th><th>Qué pasó</th></tr></thead>
+      <tbody>
+        <tr><td>27 oct 2026</td><td><b>Primeras tareas del miércoles adelantadas.</b> Notebook <code>02d</code>: tipología del cambio de la brecha con los cambios oficiales de la OCDE, corrección por cobertura y demografía al nacer. El cierre hacia abajo solo ocurre en matemáticas; el equipo elige el eje «Misma demografía, caminos distintos».</td></tr>
+        <tr><td>27 oct 2026</td><td><b>Día 2 terminado.</b> Decisiones de medición confirmadas, cobertura de PISA agregada (OCDE, tabla I.A2.1), notebooks <code>02b</code> (datos) y <code>02c</code> (tendencias) y hallazgos preliminares.</td></tr>
+        <tr><td>27 oct 2026</td><td><b>Pregunta final elegida por el equipo</b>: evolución de la desigualdad de aprendizaje en América Latina frente a la caída de la fecundidad y la mortalidad infantil, 2006–2025. Panel propuesto de 8 países.</td></tr>
+        <tr><td>26 oct 2026</td><td><b>Día 1 terminado.</b> Lectura de los notebooks 01 y 02 y propuesta de preguntas posibles.</td></tr>
+        <tr><td>26 oct 2026</td><td>La coordinación aclara que basta con una pregunta específica o un análisis por región o grupo de países, que <code>OtherVariants</code> es opcional y que el archivo debe llamarse <code>ASAPRAperture</code>.</td></tr>
+        <tr><td>26 oct 2026</td><td>Control de calidad de los notebooks 00–02 (reproducibilidad y comparación con la OCDE). Documentos de la competencia en <code>docs/competencia/</code>. Se crea esta bitácora con el plan hasta la entrega.</td></tr>
+        <tr><td>20 oct 2026</td><td>Exploración (notebook 01) y limpieza (notebook 02) de la base de la ONU, unida con PISA.</td></tr>
+        <tr><td>17–18 oct 2026</td><td>Unificación de PISA 2000–2025 con datos del Banco Mundial y de la OCDE (notebook 00). La ASA confirma que se pueden usar datos externos si se siguen sus pautas éticas.</td></tr>
+        <tr><td>14 oct 2026</td><td>Se agregan al repo la base de la ONU (WPP 2024) y su diccionario.</td></tr>
+        <tr><td>11 oct 2026</td><td>Creación del repo y de su estructura (CRISP-DM: datos, notebooks, <code>src/</code>, figuras e informe).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="contenedor">
+    Fuentes: Naciones Unidas, División de Población (2024), <em>World Population Prospects 2024</em> (CC BY 3.0 IGO) ·
+    OCDE (2026), <em>PISA 2025 Results (Volume I)</em> · Banco Mundial, EdStats ·
+    American Statistical Association (2022), <em>Ethical Guidelines for Statistical Practice</em>, doi:10.5281/zenodo.7092386.
+  </div>
+</footer>
+
+</body>
+</html>
