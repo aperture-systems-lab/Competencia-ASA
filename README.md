@@ -1,6 +1,6 @@
 # Competencia ASA
 
-> _Una o dos frases: qué se analiza, con qué datos y para quién._
+> Cómo cambió la desigualdad de aprendizaje (PISA, OCDE) en 8 países de América Latina entre 2009 y 2025, mientras bajaban la fecundidad y la mortalidad infantil (World Population Prospects 2024, ONU). Proyecto del equipo Aperture para el ASA DataQuest 2026; el registro de trabajo está en [docs/bitacora.html](docs/bitacora.html).
 
 Proyecto de análisis exploratorio (EDA) y visualización. Sigue las fases de CRISP-DM hasta la preparación de datos (no incluye modelado). La historia completa, con hallazgos y conclusiones, está en [REPORT.md](REPORT.md).
 
@@ -15,11 +15,17 @@ competencia_asa/
 │   ├── 00_unificacion_pisa.ipynb  # une PISA 2000–2018 (Banco Mundial) + 2022 y 2025 (OCDE) → data/processed/
 │   ├── 01_exploracion.ipynb       # Data Understanding: WPP2024 (Medium, Supplement y OtherVariants) y su enlace con PISA
 │   ├── 02_limpieza.ipynb          # Data Preparation: WPP2024 en los años de PISA + unión con PISA → data/processed/
+│   ├── 02b_america_latina.ipynb   # América Latina: series 1950–2100 + panel de 8 países con PISA 2006–2025 → data/processed/
+│   ├── 02c_tendencias_america_latina.ipynb  # tendencias exploratorias y primera robustez
+│   ├── 02d_analisis_america_latina.ipynb    # análisis: cómo cambió la brecha, cobertura y demografía al nacer
 │   └── 03_visualizaciones.ipynb   # los 4-6 gráficos finales → figures/
 ├── src/
 │   ├── utils.py                   # rutas y funciones de carga/limpieza reutilizables
 │   └── estilo.py                  # paleta, fuentes y tamaños comunes a todos los gráficos
 ├── figures/                       # PNGs de los gráficos finales
+├── docs/
+│   ├── bitacora.html              # registro de trabajo del equipo: pregunta, método, hallazgos, decisiones y plan
+│   └── competencia/               # guía de la ASA, descripción del Supplement y Guía Ética de la ASA
 ├── README.md                      # este archivo: qué es el proyecto y cómo ejecutarlo
 ├── REPORT.md                      # la historia: preguntas, hallazgos y conclusiones
 ├── pyproject.toml                 # dependencias del proyecto (gestionadas con uv)
@@ -32,14 +38,17 @@ competencia_asa/
   - Naciones Unidas, División de Población: [World Population Prospects 2024](https://population.un.org/wpp/) (indicadores demográficos).
   - Banco Mundial: [Education Statistics (EdStats)](https://databank.worldbank.org/source/education-statistics), base 12, descargada con `wbgapi` (PISA 2000–2018).
   - OCDE: tablas web de *PISA 2022 Results, Volume I* y *PISA 2025 Results, Volume I* (PISA 2022 y 2025).
+  - OCDE: tabla I.A2.1 de *PISA 2025 Results, Volume I*, anexo A2 ([StatLink](https://stat.link/pe3lsg)): índice de cobertura 3 de cada país, 2003–2025.
 - **Archivo(s):**
   - `WPP2024_Demographic_Indicators_Medium_csv.gz`, `WPP2024_Demographic_Indicators_OtherVariants_csv.gz`, `WPP2024_Demographic_Indicators_notes.csv`, `WPP2024_Supplement_Births_and_LE60.csv`
   - `PISA_BancoMundial_2000_2018.csv` (lo genera `notebooks/00_unificacion_pisa.ipynb`)
   - `PISA2022_cap2_desempeno.xlsx`, `PISA2022_cap3_niveles.xlsx`, `PISA2022_cap4_equidad_genero.xlsx`, `PISA2022_cap7_migracion.xlsx`
   - `PISA2025_cap2a_desempeno_niveles.xlsx`, `PISA2025_cap2c_genero.xlsx`, `PISA2025_cap2d_migracion.xlsx`
+  - `PISA2025_anexoA2_cobertura.xlsx` (cobertura de PISA por país y ciclo)
   - Resultado unificado: `data/processed/pisa_unificado.csv`
   - Resultados de la limpieza (`02_limpieza`): `data/processed/wpp_paises_pisa.csv`, `wpp_agregados_pisa.csv`, `pisa_wpp.csv` y `diccionario_wpp.csv` (ver [Datos procesados](#datos-procesados))
-- **Fecha de descarga:** WPP2024: 2026-10-14. Banco Mundial y OCDE: 2026-10-18.
+  - Resultados de `02b_america_latina`: `data/processed/al_wpp_1950_2100.csv` y `al_panel_pisa.csv` (ver [Datos de América Latina](#datos-de-américa-latina))
+- **Fecha de descarga:** WPP2024: 2026-10-14. Banco Mundial y OCDE: 2026-10-18. Cobertura de la OCDE: 2026-10-27.
 - **Qué representa cada fila:**
   - WPP2024 Medium: una ubicación en un año (`LocID`, `Time`), de 1950 a 2101. Las ubicaciones mezclan 237 países (`LocTypeName == "Country/Area"`) con agregados (Mundo, regiones, grupos de ingreso...), así que hay que filtrar antes de sumar o promediar.
   - WPP2024 Supplement: un país en un año (`ISO3_code`, `Time`), de 1950 a 2100. Son 236 países (todos menos el Vaticano) y se une uno a uno con el Medium.
@@ -119,6 +128,23 @@ Decisiones de limpieza:
 - **Outliers:** se conservan todos porque son reales. Por ejemplo, la migración de Qatar en 2006 o la densidad de Macao.
 - **Sesgo de selección:** los países de PISA no representan al mundo. En 2022, su mediana de fecundidad es 1,6 hijos frente a 2,4 en los que no participan, y su esperanza de vida, 77,9 años frente a 71,6. Las conclusiones valen para los países participantes.
 
+### Datos de América Latina
+
+Pregunta del equipo: *Entre 2006 y 2025, mientras bajaban la fecundidad y la mortalidad infantil en América Latina, ¿se redujo o creció la desigualdad de aprendizaje dentro de los países?* `notebooks/02b_america_latina.ipynb` prepara dos tablas:
+
+| Archivo | Una fila es... | Filas | Contenido |
+|---|---|---|---|
+| `al_wpp_1950_2100.csv` | un país de América Latina (50) o la región, en un año de 1950 a 2100 | 7 701 | `TFR`, `IMR`, maternidad adolescente, edad mediana y esperanza de vida, con intervalos de predicción del 80 % y 95 % de `TFR` e `IMR` desde 2024 |
+| `al_panel_pisa.csv` | uno de los 8 países del panel, en un ciclo de PISA (2006–2025) y una materia | 168 (8 × 7 × 3) | Percentiles 10, 25, 50, 75 y 90 con error estándar, brecha P90 − P10, % bajo el nivel 2, índice de cobertura y demografía del año de la prueba y del año de nacimiento (ciclo − 15) |
+
+Decisiones (fijadas antes de ver resultados; detalle y justificación en [docs/bitacora.html](docs/bitacora.html)):
+
+- **PISA:** tablas oficiales de tendencia de la OCDE (I.B1.2a.33–41 del libro de 2025), no `pisa_unificado.csv`: una sola fuente, valores revisados y comparables entre ciclos, con error estándar.
+- **Desigualdad de aprendizaje:** brecha P90 − P10 y % bajo el nivel 2. Matemáticas como materia principal; lectura y ciencias para comprobar robustez.
+- **Panel:** Argentina, Brasil, Chile, Colombia, Costa Rica, México, Perú y Uruguay, los 8 países con PISA en los 6 ciclos de 2009 a 2025. 2006 queda como contexto.
+- **Argentina 2015:** excluido (la OCDE lo considera no comparable; su tabla de tendencias lo publica sin dato).
+- **Cobertura:** se agrega el índice de cobertura 3 porque la proporción de jóvenes de 15 años que representa PISA subió entre 9 y 20 puntos en estos países.
+
 ## Criterios de análisis (técnicos y éticos, ASA)
 
 Se aplican en todos los notebooks y en el informe:
@@ -150,6 +176,9 @@ En VS Code, abre un notebook y elige como kernel el Python de `.venv`. Para usar
    - `00_unificacion_pisa`: genera `data/processed/pisa_unificado.csv`.
    - `01_exploracion`: explora WPP2024 (Medium, Supplement y OtherVariants) y comprueba el enlace con PISA. Solo lee (`data/raw/` y `pisa_unificado.csv`), no guarda nada.
    - `02_limpieza`: filtra WPP2024 a los años de PISA, lo une con `pisa_unificado.csv` y genera los cuatro archivos de [Datos procesados](#datos-procesados).
+   - `02b_america_latina`: genera los dos archivos de [Datos de América Latina](#datos-de-américa-latina).
+   - `02c_tendencias_america_latina`: tendencias exploratorias por país. Solo lee, no guarda nada.
+   - `02d_analisis_america_latina`: cómo cambió la brecha (cambios oficiales de la OCDE), corrección por cobertura y demografía al nacer. Solo lee, no guarda nada.
    - `03_visualizaciones`: genera las figuras en `figures/`.
 
 Antes de dar un notebook por terminado, haz **Restart & Run All** para comprobar que funciona de principio a fin.
