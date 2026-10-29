@@ -4,6 +4,14 @@
 
 Proyecto de análisis exploratorio (EDA) y visualización. Sigue las fases de CRISP-DM hasta la preparación de datos (no incluye modelado). La historia completa, con hallazgos y conclusiones, está en [REPORT.md](REPORT.md).
 
+## Entrega
+
+- **Video:** máximo 5:00, en inglés, con diapositivas, voz y cámara. El archivo se llama `ASAPRAperture` y se envía antes del viernes 30 de octubre de 2026 a las 5:00 p. m.
+- **Respuesta:** *Same demography, different paths.* La fecundidad y la mortalidad infantil bajaron igual en los 8 países, pero la desigualdad de aprendizaje no siguió un patrón común y la demografía no la explica. Perú es la excepción: cerró la brecha subiendo a sus estudiantes más rezagados en las tres materias.
+- **Guion:** [docs/guion_video.md](docs/guion_video.md). 21 diapositivas, narración en inglés de 579 palabras (unos 4:37) con su traducción al español.
+- **Diapositivas:** [docs/diapositivas_ASAPRAperture.pdf](docs/diapositivas_ASAPRAperture.pdf). Las mismas 21 diapositivas en PDF (16:9).
+- **Figuras:** las 4 de `figures/`, en inglés, que generan `03_visualizaciones` y usa [REPORT.md](REPORT.md).
+
 ## Estructura
 
 ```
@@ -25,11 +33,14 @@ competencia_asa/
 ├── figures/                       # PNGs de los gráficos finales
 ├── docs/
 │   ├── bitacora.html              # registro de trabajo del equipo: pregunta, método, hallazgos, decisiones y plan
+│   ├── guion_video.md             # guion del video: narración en inglés por diapositiva, con traducción
+│   ├── diapositivas_ASAPRAperture.pdf  # las 21 diapositivas del video en PDF
 │   └── competencia/               # guía de la ASA, descripción del Supplement y Guía Ética de la ASA
 ├── README.md                      # este archivo: qué es el proyecto y cómo ejecutarlo
 ├── REPORT.md                      # la historia: preguntas, hallazgos y conclusiones
 ├── pyproject.toml                 # dependencias del proyecto (gestionadas con uv)
-└── uv.lock                        # versiones exactas instaladas (no se edita a mano)
+├── uv.lock                        # versiones exactas instaladas (no se edita a mano)
+└── .python-version                # versión de Python del proyecto (3.13)
 ```
 
 ## Datos
@@ -189,4 +200,4 @@ Antes de dar un notebook por terminado, haz **Restart & Run All** para comprobar
 - `data/raw/` es de solo lectura. Toda transformación se guarda en `data/processed/`.
 - Los notebooks se numeran en el orden del proceso.
 - Todos los notebooks llaman a `aplicar_estilo()` de `src/estilo.py`, así todos los gráficos parecen del mismo proyecto.
-- Las figuras llevan nombres descriptivos: `fig03_ventas_por_region.png`, no `grafico1.png`.
+- Las figuras llevan nombres descriptivos: `fig03_peru_excepcion.png`, no `grafico1.png`.
