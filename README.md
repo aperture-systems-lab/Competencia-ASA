@@ -11,6 +11,8 @@ Proyecto de análisis exploratorio (EDA) y visualización. Sigue las fases de CR
 - **Guion:** [docs/guion_video.md](docs/guion_video.md). 21 diapositivas, narración en inglés de 579 palabras (unos 4:37) con su traducción al español.
 - **Diapositivas:** [docs/diapositivas_ASAPRAperture.pdf](docs/diapositivas_ASAPRAperture.pdf). Las mismas 21 diapositivas en PDF (16:9).
 - **Figuras:** las 4 de `figures/`, en inglés, que generan `03_visualizaciones` y usa [REPORT.md](REPORT.md).
+- **Documentos de la competencia:** [guía de la ASA](docs/competencia/2026DataQuest_WPP2024_Getting_Started.docx), [descripción del Supplement](docs/competencia/WPP2024_Supplement_Description.docx) y [Guía Ética de la ASA](docs/competencia/ASA_Ethical_Guidelines_2022.pdf).
+- **Bitácora:** [docs/bitacora.html](docs/bitacora.html), con la pregunta, el método, los hallazgos, las decisiones y el plan.
 
 ## Estructura
 
@@ -35,7 +37,10 @@ competencia_asa/
 │   ├── bitacora.html              # registro de trabajo del equipo: pregunta, método, hallazgos, decisiones y plan
 │   ├── guion_video.md             # guion del video: narración en inglés por diapositiva, con traducción
 │   ├── diapositivas_ASAPRAperture.pdf  # las 21 diapositivas del video en PDF
-│   └── competencia/               # guía de la ASA, descripción del Supplement y Guía Ética de la ASA
+│   └── competencia/               # documentos oficiales de la competencia:
+│       ├── 2026DataQuest_WPP2024_Getting_Started.docx  # guía de la ASA: reglas, preguntas sugeridas y datos
+│       ├── WPP2024_Supplement_Description.docx         # descripción del archivo Supplement de WPP2024
+│       └── ASA_Ethical_Guidelines_2022.pdf             # Guía Ética de la ASA (criterio del premio de ética)
 ├── README.md                      # este archivo: qué es el proyecto y cómo ejecutarlo
 ├── REPORT.md                      # la historia: preguntas, hallazgos y conclusiones
 ├── pyproject.toml                 # dependencias del proyecto (gestionadas con uv)
