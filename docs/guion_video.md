@@ -79,9 +79,9 @@ Deck: *Demographic transition and learning inequality in Latin America* (21 slid
 
 ### 11. Peru closed the gap upward in all 3 subjects (2:36–2:47)
 
-**EN** · So Peru deserves a closer look. Its lowest performers gained 34 points in mathematics, 36 in reading and 47 in science.
+**EN** · So Peru deserves a closer look. Its lowest performers gained 34 points in mathematics, 37 in reading and 47 in science.
 
-**ES** · Por eso Perú merece una mirada más cercana. Sus estudiantes más rezagados ganaron 34 puntos en matemáticas, 36 en lectura y 47 en ciencias.
+**ES** · Por eso Perú merece una mirada más cercana. Sus estudiantes más rezagados ganaron 34 puntos en matemáticas, 37 en lectura y 47 en ciencias.
 
 ### 12. Peru rose until 2018, then stalled (2:47–2:58)
 

@@ -88,4 +88,4 @@ Peru is the only country that narrowed the gap from below in all three subjects:
 - **Comparability:** PISA 2022 was affected by the pandemic; comparisons across cycles carry link error, included in the OECD changes used here.
 - **Next steps:** study what Peru did differently (curriculum, targeting of low performers, school expansion), add socio-economic gradients over time (OECD tables I.B1.2b), and extend the panel as more Latin American countries accumulate PISA cycles.
 
-*Process, decisions and quality checks: [docs/bitacora.html](docs/bitacora.html). Code: notebooks `02b` to `03`.*
+*Process, decisions and quality checks: [docs/bitacora.html](docs/bitacora.html). Code: notebooks `02b` to `03`. Video: script in [docs/guion_video.md](docs/guion_video.md) and slides in [docs/diapositivas_ASAPRAperture.pdf](docs/diapositivas_ASAPRAperture.pdf).*
