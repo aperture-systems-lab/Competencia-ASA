@@ -208,7 +208,7 @@
     <div class="meta">
       <span>Equipo: <b>Aperture</b></span>
       <span>Universidad Nacional de Colombia, sede Medellín</span>
-      <span>Última actualización: <b>27 de octubre de 2026</b></span>
+      <span>Última actualización: <b>29 de octubre de 2026</b></span>
       <span>Entrega: <b>viernes 30 de octubre, 5:00 p. m.</b></span>
     </div>
   </div>
@@ -307,7 +307,7 @@
         <tr><td>2. Datos de América Latina</td><td><code>02b_america_latina</code></td><td>Series 1950–2100 de fecundidad y mortalidad infantil para la región, y el panel de los 8 países con su desigualdad de aprendizaje y su cobertura en cada ciclo de PISA</td></tr>
         <tr><td>3. Tendencias</td><td><code>02c_tendencias_america_latina</code></td><td>Gráficos por país, cambios entre 2009 y 2025, relación con la demografía y primeras pruebas de robustez</td></tr>
         <tr><td>4. Análisis</td><td><code>02d_analisis_america_latina</code></td><td>Cómo cambió la brecha (cambios oficiales de la OCDE), corrección por cobertura y demografía del año de nacimiento</td></tr>
-        <tr><td>5. Figuras finales</td><td><code>03_visualizaciones</code></td><td>Las figuras del video, en inglés</td></tr>
+        <tr><td>5. Figuras finales</td><td><code>03_visualizaciones</code></td><td>Las cuatro figuras del video, en inglés: misma demografía, caminos distintos, Perú, y cobertura y demografía</td></tr>
       </tbody>
     </table>
   </div>
@@ -360,7 +360,7 @@
 <!-- ======================================================= -->
 <section id="estado">
   <h2>Estado y plan</h2>
-  <p class="lead">Los datos están preparados, el análisis principal está hecho y el eje de la historia está elegido. Lo que sigue es completar la robustez, hacer las figuras finales, escribir el informe y grabar el video.</p>
+  <p class="lead">El análisis, la robustez, las cuatro figuras finales y el informe están terminados. Lo que sigue es el guion, la grabación, los subtítulos y el envío.</p>
 
   <div class="flujo">
     <div class="paso hecho"><div class="n">notebooks/00</div><div class="t">Unificación PISA</div><span class="chip ok">Hecho</span></div>
@@ -371,9 +371,9 @@
     <div class="flecha">→</div>
     <div class="paso hecho"><div class="n">notebooks/02b–02d</div><div class="t">Datos, tendencias y análisis de América Latina</div><span class="chip ok">Hecho</span></div>
     <div class="flecha">→</div>
-    <div class="paso actual"><div class="n">notebooks/03</div><div class="t">Figuras finales</div><span class="chip curso">Siguiente</span></div>
+    <div class="paso hecho"><div class="n">notebooks/03</div><div class="t">Figuras finales</div><span class="chip ok">Hecho</span></div>
     <div class="flecha">→</div>
-    <div class="paso"><div class="n">REPORT.md → video/</div><div class="t">Informe y video</div><span class="chip pend">Pendiente</span></div>
+    <div class="paso actual"><div class="n">REPORT.md → video</div><div class="t">Informe listo · video</div><span class="chip curso">Siguiente</span></div>
   </div>
 
   <h3>Tareas por día</h3>
@@ -400,15 +400,15 @@
     </ul>
   </div>
 
-  <div class="dia">
-    <div class="fecha"><div class="d">Miércoles</div><div class="f">28 oct</div><div class="o">Análisis y gráficos</div></div>
+  <div class="dia hecho">
+    <div class="fecha"><div class="d">Miércoles</div><div class="f">28 oct</div><div class="o">Análisis y gráficos · completo</div></div>
     <ul class="tareas">
       <li><span>Definir el eje de la historia<span class="det">«Misma demografía, caminos distintos», tras comprobar que el cierre hacia abajo solo ocurre en matemáticas</span></span><span class="chip ok">Hecho</span></li>
       <li><span>Probar la demografía al nacer de los evaluados<span class="det">No muestra una relación consistente (<code>02d</code>, sección 3)</span></span><span class="chip ok">Hecho</span></li>
-      <li><span>Pruebas de robustez<span class="det">Ya hecho: las tres materias, error de enlace y cobertura. Falta: quitar un país a la vez</span></span><span class="chip pend">Pendiente</span></li>
-      <li><span>Contexto de la ONU para el cierre<span class="det">¿Qué se proyecta para la región hasta 2050? Con su incertidumbre</span></span><span class="chip pend">Pendiente</span></li>
-      <li><span>De 4 a 6 figuras finales en <code>notebooks/03_visualizaciones</code><span class="det">Con <code>src/estilo.py</code>, texto en inglés, guardadas en <code>figures/</code></span></span><span class="chip pend">Pendiente</span></li>
-      <li><span>Llenar <code>REPORT.md</code></span><span class="chip pend">Pendiente</span></li>
+      <li><span>Pruebas de robustez<span class="det">Tres materias, error de enlace, cobertura y quitar un país a la vez (<code>02d</code>, sección 4)</span></span><span class="chip ok">Hecho</span></li>
+      <li><span>Proyecciones de la ONU a 2050<span class="det">Con intervalos de predicción (<code>02d</code>, sección 5)</span></span><span class="chip ok">Hecho</span></li>
+      <li><span>Cuatro figuras finales en <code>notebooks/03_visualizaciones</code><span class="det">En inglés, formato 16:9, guardadas en <code>figures/</code></span></span><span class="chip ok">Hecho</span></li>
+      <li><span>Escribir <code>REPORT.md</code><span class="det">En inglés; base para el guion</span></span><span class="chip ok">Hecho</span></li>
     </ul>
   </div>
 
@@ -476,12 +476,32 @@
   <p>La cobertura explica cerca de la mitad de la caída de matemáticas, pero no toda: el 10 % superior de la generación retrocedió en México (−35), Argentina (−21), Chile (−18), Uruguay (−17) y Costa Rica (−9).</p>
 
   <h3>5. La demografía no explica estos caminos</h3>
+  <p style="margin-bottom:4px">Ver <code>figures/fig04_cobertura_y_demografia.png</code>.</p>
   <ul>
     <li><b>Entre países:</b> los que más redujeron su fecundidad o su mortalidad infantil no son los que más cambiaron su brecha. Las correlaciones van de −0,36 a 0,62 según la materia y el indicador, cambian de signo y ninguna es significativa (n = 8).</li>
     <li><b>Dentro de cada país:</b> solo en matemáticas aparecen relaciones (ciclos con más fecundidad o más mortalidad infantil, brecha mayor), y no se repiten en lectura ni en ciencias. Al controlar la cobertura, solo queda la de la fecundidad.</li>
     <li><b>Al nacer:</b> la fecundidad y la mortalidad infantil del año de nacimiento de los evaluados (ciclo − 15) tampoco muestran una relación consistente; la que aparece en matemáticas desaparece al controlar la cobertura.</li>
     <li>De 24 modelos, 5 dan p &lt; 0,05, todos en matemáticas; por azar se esperaría alrededor de 1.</li>
   </ul>
+
+  <h3>6. Las conclusiones resisten quitar cualquier país</h3>
+  <p>Cada resultado se repitió 9 veces (con todos los países y sin cada uno). En las 9 versiones, en matemáticas el percentil 90 cae más que el 10 y, en ciencias, ningún país cierra la brecha hacia abajo. La relación con la fecundidad dentro de cada país se mantiene en matemáticas (8 de 9 versiones, unos 12 a 18 puntos de brecha por hijo), pero en lectura y ciencias cambia de signo según el país que se quite.</p>
+
+  <h3>7. Lo que viene</h3>
+  <p>La ONU proyecta para la región 1,68 hijos por mujer en 2050 (IP 95 %: 1,45–1,91), por debajo del reemplazo desde 2014, y una mortalidad infantil de 6,9 por 1.000 (IP 95 %: 5,1–10,0), frente a 13,1 en 2023.</p>
+
+  <h3>Figuras finales</h3>
+  <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Archivo en <code>figures/</code></th><th>Mensaje</th></tr></thead>
+      <tbody>
+        <tr><td><code>fig01_misma_demografia.png</code></td><td>Same demography: fertility and infant mortality fell in all eight countries</td></tr>
+        <tr><td><code>fig02_caminos_distintos.png</code></td><td>Different paths: how the learning gap changed, 2009–2025</td></tr>
+        <tr><td><code>fig03_peru_excepcion.png</code></td><td>Only Peru closed the gap from below, in all three subjects</td></tr>
+        <tr><td><code>fig04_cobertura_y_demografia.png</code></td><td>Behind the numbers: more students tested, no simple demographic link</td></tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
 <!-- ======================================================= -->
@@ -556,6 +576,7 @@ IGUAL  data/processed/wpp_paises_pisa.csv</span></pre>
         <tr><td>Usar los cambios oficiales de la OCDE</td><td>Sus errores estándar incluyen el error de enlace entre ciclos</td><td>B1, B2</td></tr>
         <tr><td>Supuesto para corregir por cobertura</td><td>Los jóvenes no cubiertos no estarían en el 25 % superior de su generación; solo se corrigen los percentiles altos</td><td>B2</td></tr>
         <tr><td>Declarar el número de pruebas</td><td>36 pruebas en total (24 modelos y 12 correlaciones); un resultado cuenta si se repite entre materias, no por un valor p aislado</td><td>B3</td></tr>
+        <tr><td>Figuras con etiquetas directas y marcadores distintos por materia</td><td>La identidad no depende solo del color (accesible para daltonismo); no se pudo correr el validador de paleta porque no hay Node instalado</td><td>D6</td></tr>
         <tr><td>Eje «Misma demografía, caminos distintos»</td><td>Es la conclusión que sostienen todas las materias, no solo una</td><td>A2, C2</td></tr>
         <tr><td>Revisiones de PISA (Austria 2000, Brasil 2012, Palestina 2022)</td><td>Pequeñas diferencias entre fuentes; se documentan</td><td>B1, B5</td></tr>
       </tbody>
@@ -600,6 +621,8 @@ IGUAL  data/processed/wpp_paises_pisa.csv</span></pre>
     <table>
       <thead><tr><th>Fecha</th><th>Qué pasó</th></tr></thead>
       <tbody>
+        <tr><td>29 oct 2026</td><td><b>Miércoles completo.</b> Robustez quitando un país a la vez y proyecciones a 2050 (<code>02d</code>), cuatro figuras finales en inglés (<code>03</code>) y <code>REPORT.md</code> en inglés. Trabajo en la rama <code>valentina/figuras-finales</code>.</td></tr>
+        <tr><td>27 oct 2026</td><td>Pull Request #1 unido a <code>main</code>.</td></tr>
         <tr><td>27 oct 2026</td><td><b>Primeras tareas del miércoles adelantadas.</b> Notebook <code>02d</code>: tipología del cambio de la brecha con los cambios oficiales de la OCDE, corrección por cobertura y demografía al nacer. El cierre hacia abajo solo ocurre en matemáticas; el equipo elige el eje «Misma demografía, caminos distintos».</td></tr>
         <tr><td>27 oct 2026</td><td><b>Día 2 terminado.</b> Decisiones de medición confirmadas, cobertura de PISA agregada (OCDE, tabla I.A2.1), notebooks <code>02b</code> (datos) y <code>02c</code> (tendencias) y hallazgos preliminares.</td></tr>
         <tr><td>27 oct 2026</td><td><b>Pregunta final elegida por el equipo</b>: evolución de la desigualdad de aprendizaje en América Latina frente a la caída de la fecundidad y la mortalidad infantil, 2006–2025. Panel propuesto de 8 países.</td></tr>

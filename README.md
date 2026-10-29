@@ -17,8 +17,8 @@ competencia_asa/
 │   ├── 02_limpieza.ipynb          # Data Preparation: WPP2024 en los años de PISA + unión con PISA → data/processed/
 │   ├── 02b_america_latina.ipynb   # América Latina: series 1950–2100 + panel de 8 países con PISA 2006–2025 → data/processed/
 │   ├── 02c_tendencias_america_latina.ipynb  # tendencias exploratorias y primera robustez
-│   ├── 02d_analisis_america_latina.ipynb    # análisis: cómo cambió la brecha, cobertura y demografía al nacer
-│   └── 03_visualizaciones.ipynb   # los 4-6 gráficos finales → figures/
+│   ├── 02d_analisis_america_latina.ipynb    # análisis: cambio de la brecha, cobertura, demografía al nacer, robustez y proyecciones
+│   └── 03_visualizaciones.ipynb   # las 4 figuras finales del video (en inglés) → figures/
 ├── src/
 │   ├── utils.py                   # rutas y funciones de carga/limpieza reutilizables
 │   └── estilo.py                  # paleta, fuentes y tamaños comunes a todos los gráficos
@@ -47,7 +47,7 @@ competencia_asa/
   - `PISA2025_anexoA2_cobertura.xlsx` (cobertura de PISA por país y ciclo)
   - Resultado unificado: `data/processed/pisa_unificado.csv`
   - Resultados de la limpieza (`02_limpieza`): `data/processed/wpp_paises_pisa.csv`, `wpp_agregados_pisa.csv`, `pisa_wpp.csv` y `diccionario_wpp.csv` (ver [Datos procesados](#datos-procesados))
-  - Resultados de `02b_america_latina`: `data/processed/al_wpp_1950_2100.csv` y `al_panel_pisa.csv` (ver [Datos de América Latina](#datos-de-américa-latina))
+  - Resultados de `02b_america_latina`: `data/processed/al_wpp_1950_2100.csv` y `al_panel_pisa.csv`; de `02d_analisis_america_latina`: `al_cambios_2009_2025.csv` (ver [Datos de América Latina](#datos-de-américa-latina))
 - **Fecha de descarga:** WPP2024: 2026-10-14. Banco Mundial y OCDE: 2026-10-18. Cobertura de la OCDE: 2026-10-27.
 - **Qué representa cada fila:**
   - WPP2024 Medium: una ubicación en un año (`LocID`, `Time`), de 1950 a 2101. Las ubicaciones mezclan 237 países (`LocTypeName == "Country/Area"`) con agregados (Mundo, regiones, grupos de ingreso...), así que hay que filtrar antes de sumar o promediar.
@@ -136,6 +136,7 @@ Pregunta del equipo: *Entre 2006 y 2025, mientras bajaban la fecundidad y la mor
 |---|---|---|---|
 | `al_wpp_1950_2100.csv` | un país de América Latina (50) o la región, en un año de 1950 a 2100 | 7 701 | `TFR`, `IMR`, maternidad adolescente, edad mediana y esperanza de vida, con intervalos de predicción del 80 % y 95 % de `TFR` e `IMR` desde 2024 |
 | `al_panel_pisa.csv` | uno de los 8 países del panel, en un ciclo de PISA (2006–2025) y una materia | 168 (8 × 7 × 3) | Percentiles 10, 25, 50, 75 y 90 con error estándar, brecha P90 − P10, % bajo el nivel 2, índice de cobertura y demografía del año de la prueba y del año de nacimiento (ciclo − 15) |
+| `al_cambios_2009_2025.csv` | uno de los 8 países en una materia | 24 (8 × 3) | Cambios oficiales de la OCDE 2009→2025 (percentiles y % bajo el nivel 2, con error estándar), tipo de cambio de la brecha, percentil 90 de toda la generación corregido por cobertura y cambios demográficos. Lo genera `02d` y lo usa `03` |
 
 Decisiones (fijadas antes de ver resultados; detalle y justificación en [docs/bitacora.html](docs/bitacora.html)):
 
@@ -178,8 +179,8 @@ En VS Code, abre un notebook y elige como kernel el Python de `.venv`. Para usar
    - `02_limpieza`: filtra WPP2024 a los años de PISA, lo une con `pisa_unificado.csv` y genera los cuatro archivos de [Datos procesados](#datos-procesados).
    - `02b_america_latina`: genera los dos archivos de [Datos de América Latina](#datos-de-américa-latina).
    - `02c_tendencias_america_latina`: tendencias exploratorias por país. Solo lee, no guarda nada.
-   - `02d_analisis_america_latina`: cómo cambió la brecha (cambios oficiales de la OCDE), corrección por cobertura y demografía al nacer. Solo lee, no guarda nada.
-   - `03_visualizaciones`: genera las figuras en `figures/`.
+   - `02d_analisis_america_latina`: cómo cambió la brecha (cambios oficiales de la OCDE), corrección por cobertura, demografía al nacer, robustez quitando un país a la vez y proyecciones a 2050. Genera `al_cambios_2009_2025.csv`.
+   - `03_visualizaciones`: genera las 4 figuras en `figures/` (`fig01_misma_demografia.png` a `fig04_cobertura_y_demografia.png`).
 
 Antes de dar un notebook por terminado, haz **Restart & Run All** para comprobar que funciona de principio a fin.
 
