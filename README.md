@@ -6,10 +6,13 @@ Proyecto de análisis exploratorio (EDA) y visualización. Sigue las fases de CR
 
 ## Entrega
 
-- **Video:** máximo 5:00, en inglés, con diapositivas, voz y cámara. El archivo se llama `ASAPRAperture` y se envía antes del viernes 30 de octubre de 2026 a las 5:00 p. m.
+**Entregado el 30 de octubre de 2026.**
+
+- **Video:** [youtu.be/iaIENwYavIs](https://youtu.be/iaIENwYavIs) (`ASAPRAperture.mp4`, 4:59, en inglés, con diapositivas, voz y cámara). Se envió por correo a la coordinación con enlaces a YouTube (no listado) y Google Drive. El archivo no está en el repo porque pesa más de lo que permite GitHub; la copia local va en `video/`, que está en `.gitignore`.
 - **Respuesta:** *Same demography, different paths.* La fecundidad y la mortalidad infantil bajaron igual en los 8 países, pero la desigualdad de aprendizaje no siguió un patrón común y la demografía no la explica. Perú es la excepción: cerró la brecha subiendo a sus estudiantes más rezagados en las tres materias.
 - **Guion:** [docs/guion_video.md](docs/guion_video.md). 21 diapositivas, narración en inglés de 579 palabras (unos 4:37) con su traducción al español.
 - **Diapositivas:** [docs/diapositivas_ASAPRAperture.pdf](docs/diapositivas_ASAPRAperture.pdf). Las mismas 21 diapositivas en PDF (16:9).
+- **Subtítulos:** [docs/subtitulos_ASAPRAperture.srt](docs/subtitulos_ASAPRAperture.srt). El guion completo en inglés en formato SRT, con tiempos estimados.
 - **Figuras:** las 4 de `figures/`, en inglés, que generan `03_visualizaciones` y usa [REPORT.md](REPORT.md).
 - **Documentos de la competencia:** [guía de la ASA](docs/competencia/2026DataQuest_WPP2024_Getting_Started.docx), [descripción del Supplement](docs/competencia/WPP2024_Supplement_Description.docx) y [Guía Ética de la ASA](docs/competencia/ASA_Ethical_Guidelines_2022.pdf).
 - **Bitácora:** [docs/bitacora.html](docs/bitacora.html), con la pregunta, el método, los hallazgos, las decisiones y el plan.
@@ -37,10 +40,12 @@ competencia_asa/
 │   ├── bitacora.html              # registro de trabajo del equipo: pregunta, método, hallazgos, decisiones y plan
 │   ├── guion_video.md             # guion del video: narración en inglés por diapositiva, con traducción
 │   ├── diapositivas_ASAPRAperture.pdf  # las 21 diapositivas del video en PDF
+│   ├── subtitulos_ASAPRAperture.srt    # subtítulos en inglés del video
 │   └── competencia/               # documentos oficiales de la competencia:
 │       ├── 2026DataQuest_WPP2024_Getting_Started.docx  # guía de la ASA: reglas, preguntas sugeridas y datos
 │       ├── WPP2024_Supplement_Description.docx         # descripción del archivo Supplement de WPP2024
 │       └── ASA_Ethical_Guidelines_2022.pdf             # Guía Ética de la ASA (criterio del premio de ética)
+├── video/                         # copia local del video final (no se sube: ver .gitignore)
 ├── README.md                      # este archivo: qué es el proyecto y cómo ejecutarlo
 ├── REPORT.md                      # la historia: preguntas, hallazgos y conclusiones
 ├── pyproject.toml                 # dependencias del proyecto (gestionadas con uv)

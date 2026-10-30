@@ -14,3 +14,6 @@ Thumbs.db
 # data/raw/*
 # data/processed/*
 # !data/**/.gitkeep
+
+# Video final: pesa más de lo que permite GitHub (está en YouTube y Drive)
+video/
